@@ -1,0 +1,30 @@
+{
+  "author": "Matt McKellar-Spence",
+  "bugs": {
+    "url": "https://github.com/MattMS/Fallout_3_data_reader/issues"
+  },
+  "dependencies": {
+    "ramda": "^0.18.0",
+    "redis": "^2.4.2"
+  },
+  "description": "Extract details from Fallout 3 ESM/ESP files.",
+  "homepage": "https://github.com/MattMS/Fallout_3_data_reader#readme",
+  "keywords": [
+    "binary",
+    "ESM",
+    "Fallout",
+    "reader",
+    "stream"
+  ],
+  "license": "ISC",
+  "main": "process_stream.coffee.md",
+  "name": "fallout_3_data_reader",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MattMS/Fallout_3_data_reader.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.1.0"
+}
