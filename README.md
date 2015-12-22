@@ -1,5 +1,9 @@
 # Read Fallout 3 data files
 
+**Please note:** This is a work in progress.
+It is only partially implemented and barely tested.
+Come back later.
+
 This project parses the data files (esm, esp) used by Fallout 3.
 There are scripts for creating a text file or populating a Redis database.
 
