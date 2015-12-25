@@ -9,6 +9,13 @@
 
 ## Run!
 
+	base_name =
+		if 3 <= process.argv.length
+			"#{process.argv[2]}.GRUP"
+		else
+			'GRUP'
+
+
 	redis_client = redis.createClient()
 
 	show_error = (err)->
@@ -21,12 +28,16 @@
 	redis_client.on 'error', show_error
 
 
-	redis_client.smembers 'GRUP', (err, result)->
+	redis_client.smembers base_name, (err, result)->
 		if err
 			show_error err
 
+		else if 0 == result.length
+			console.error "No keys found in set: #{base_name}"
+			redis_client.quit()
+
 		else
-			keys = ("GRUP.#{k}.label" for k in result)
+			keys = ("#{base_name}.#{k}.label" for k in result)
 
 			redis_client.mget keys, (err, replies)->
 				if err
