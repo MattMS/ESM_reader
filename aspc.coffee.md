@@ -4,6 +4,8 @@
 
 	buffer_to = require './buffer_to'
 
+	obnd = require './values/obnd'
+
 
 ## Exports
 
@@ -12,13 +14,7 @@
 
 		BNAM: buffer_to.uint32 0
 
-		OBND_: (value, record)->
-			x1: value.readInt16LE 0
-			y1: value.readInt16LE 2
-			z1: value.readInt16LE 4
-			x2: value.readInt16LE 6
-			y2: value.readInt16LE 8
-			z2: value.readInt16LE 10
+		OBND: obnd
 
 		RDAT: buffer_to.uint32 0
 
@@ -28,5 +24,3 @@
 ## Links
 
 - [ASPC @ UESP](http://www.uesp.net/wiki/Tes5Mod:Mod_File_Format/ASPC)
-
-- [OBND field @ UESP](http://www.uesp.net/wiki/Tes5Mod:Mod_File_Format/OBND_Field)
