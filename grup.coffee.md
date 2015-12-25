@@ -1,5 +1,22 @@
 # GRUP (group)
 
+## File structure
+
+- 4 ASCII bytes: `GRUP`
+
+- 4 byte unsigned integer: size of group (including the 24 byte header).
+
+- 4 ASCII bytes: label
+
+- 4 byte unsigned integer
+
+- 2 byte unsigned integer: last edit day of month
+
+- 2 byte unsigned integer: last edit month since December 2002
+
+- 6 bytes
+
+
 ## Constants
 
 	GRUP_DETAILS_LENGTH = 16
@@ -133,4 +150,4 @@ Get the number of bytes in this entire block.
 
 ## Links
 
-- [MOD 5 @ UESP](http://www.uesp.net/wiki/Tes5Mod:Mod_File_Format#Groups)
+- [Groups File Format @ UESP](http://www.uesp.net/wiki/Tes5Mod:Mod_File_Format#Groups)

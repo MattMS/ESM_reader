@@ -1,5 +1,22 @@
 # GRUP record
 
+## File structure
+
+- 4 ASCII bytes: label (usually matches group label)
+
+- 4 byte unsigned integer: size of record
+
+- 4 byte bit flags
+
+- 4 byte unsigned integer: record ID
+
+- 4 byte unsigned integer: revision ID
+
+- 2 byte unsigned integer: version
+
+- 2 bytes
+
+
 ## Constants
 
 	RECORD_DETAILS_LENGTH = 24
@@ -146,4 +163,4 @@
 
 ## Links
 
-- [MOD 5 @ UESP](http://www.uesp.net/wiki/Tes5Mod:Mod_File_Format#Groups)
+- [Records @ UESP](http://www.uesp.net/wiki/Tes5Mod:Mod_File_Format#Records)
