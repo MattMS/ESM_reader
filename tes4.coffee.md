@@ -45,18 +45,28 @@ There may be multiple references to master files.
 
 	buffer_to = require './buffer_to'
 
+	make_object = require './make_object'
+
+	R = require 'ramda'
+
+
+## Helper functions
+
+	float_to_fixed = R.invoker 1, 'toFixed'
+
 
 ## Exports
 
 	module.exports =
 		CNAM: buffer_to.ascii
 
-		HEDR: (value)->
-			version: value.readFloatLE(0).toFixed 2
+		HEDR: make_object
+			version: R.compose float_to_fixed(2), buffer_to.float 0
+			#version: value.readFloatLE(0).toFixed 2
 
-			record_count: buffer_to.uint32(4) value
+			record_count: buffer_to.uint32 4
 
-			next_object_id: buffer_to.uint32(8) value
+			next_object_id: buffer_to.uint32 8
 
 		MAST: buffer_to.ascii
 
