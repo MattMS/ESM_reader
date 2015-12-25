@@ -43,9 +43,9 @@ There may be multiple references to master files.
 
 ## Imports
 
-	buffer_to = require './buffer_to'
+	buffer_to = require '../buffer_to'
 
-	make_object = require './make_object'
+	make_object = require '../make_object'
 
 	R = require 'ramda'
 

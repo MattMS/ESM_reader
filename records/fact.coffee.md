@@ -67,7 +67,7 @@ Can be multiple XNAM fields.
 
 ## Imports
 
-	buffer_to = require './buffer_to'
+	buffer_to = require '../buffer_to'
 
 
 ## Constants

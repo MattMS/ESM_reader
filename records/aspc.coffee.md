@@ -2,9 +2,9 @@
 
 ## Imports
 
-	buffer_to = require './buffer_to'
+	buffer_to = require '../buffer_to'
 
-	obnd = require './values/obnd'
+	obnd = require '../values/obnd'
 
 
 ## Exports

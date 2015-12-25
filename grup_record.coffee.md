@@ -27,16 +27,16 @@
 	get_field = require './get_field'
 
 	handlers =
-		ASPC: require './aspc'
-		DOOR: require './door'
-		FACT: require './fact'
-		GLOB: require './glob'
-		GMST: require './gmst'
-		MGEF: require './mgef'
-		SCPT: require './scpt'
-		SOUN: require './soun'
-		TES4: require './tes4'
-		TXST: require './txst'
+		ASPC: require './records/aspc'
+		DOOR: require './records/door'
+		FACT: require './records/fact'
+		GLOB: require './records/glob'
+		GMST: require './records/gmst'
+		MGEF: require './records/mgef'
+		SCPT: require './records/scpt'
+		SOUN: require './records/soun'
+		TES4: require './records/tes4'
+		TXST: require './records/txst'
 
 	R = require 'ramda'
 

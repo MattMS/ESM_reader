@@ -33,7 +33,7 @@ These are optional fields with labels `TX00` to `TX07`.
 
 ## Imports
 
-	buffer_to = require './buffer_to'
+	buffer_to = require '../buffer_to'
 
 
 ## Exports
