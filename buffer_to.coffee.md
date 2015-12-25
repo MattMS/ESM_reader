@@ -32,6 +32,10 @@
 
 		float: R.invoker 1, 'readFloatLE'
 
+		int16: R.invoker 1, 'readInt16LE'
+
+		uint8: R.invoker 1, 'readUInt8'
+
 		uint16: R.invoker 1, 'readUInt16LE'
 
 		uint32: R.invoker 1, 'readUInt32LE'
