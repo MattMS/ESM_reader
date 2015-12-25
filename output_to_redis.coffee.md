@@ -15,6 +15,13 @@
 
 	file_path = process.argv[2]
 
+	prefix =
+		if 4 <= process.argv.length
+			process.argv[3]
+		else
+			''
+
+
 	read_stream = fs.createReadStream file_path
 
 	redis_client = redis.createClient()
@@ -34,6 +41,9 @@
 
 			if R.is Array, name
 				name = R.join '.', name
+
+			if '' != prefix
+				name = "#{prefix}.#{name}"
 
 			redis_client.set name, value, (err, res)->
 				if err
