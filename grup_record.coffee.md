@@ -24,6 +24,8 @@
 
 ## Imports
 
+	buffer_to = require './buffer_to'
+
 	get_field = require './get_field'
 
 	handlers =
@@ -38,6 +40,8 @@
 		TES4: require './records/tes4'
 		TXST: require './records/txst'
 
+	make_object = require './make_object'
+
 	R = require 'ramda'
 
 
@@ -49,65 +53,107 @@
 				Promise.reject 'Missing data for record.'
 
 			else
-				read_record state
+				new Promise (resolve, reject)->
+					if state.record_count
+						state.record_count += 1
+					else
+						state.record_count = 1
+
+					state.record = read_record_header state.buffer
+
+					state.record.end = state.bytes_read + RECORD_DETAILS_LENGTH + state.record.bytes
+
+					state.record.field_count = {}
+
+					state.record.fields = []
+
+					state.record.path = [
+						state.path
+						state.record.label
+						state.record_count
+					]
+
+					base_path = state.record.path.join '.'
+
+					#make_path = R.compose R.join('.'), R.concat state.record.path
+					#make_path('size')
+
+					state.emit "#{base_path}.size", state.record.bytes
+
+					.then -> state.emit "#{base_path}.id", state.record.id
+
+					.then ->
+						state.buffer = state.buffer.slice RECORD_DETAILS_LENGTH
+
+						state.bytes_read += RECORD_DETAILS_LENGTH
+
+						resolve state
+
+					.catch (err)->
+						console.error err
+
+						state.call = null
+
+						reject state
 
 		else
 			if state.buffer.length < state.record.bytes
 				Promise.reject 'Missing data for record.'
 
+			else if state.record.end <= state.bytes_read
+				delete state.record
+
+				Promise.resolve state
+
 			else
 				read_record_data state
 
 
-	read_record = (state)->
+	increment_field_count = (record, label)->
+		if record.field_count[label]
+			record.field_count[label] += 1
+		else
+			record.field_count[label] = 1
+
+
+	get_field_path = (record, label)->
+		R.concat record.path, [
+			label
+			record.field_count[label]
+		]
+
+
+	read_record_header = make_object
+		#flags = buffer.slice 8, 12
+
+		bytes: buffer_to.uint32 4
+		id: buffer_to.uint32 12
+		label: R.compose buffer_to.ascii, R.slice(0, 4)
+		#label: buffer.slice(0, 4).toString 'ascii'
+		#revision: buffer_to.uint32 16
+		#unknown: buffer_to.uint16 22
+		#version: buffer_to.uint16 20
+
+
+	read_record_data = (state)->
 		new Promise (resolve, reject)->
-			label = state.buffer.slice(0, 4).toString 'ascii'
+			{label, length, value} = get_field state.buffer
 
-			if state.record_count
-				state.record_count += 1
-			else
-				state.record_count = 1
+			increment_field_count state.record, label
 
-			base_path = [
-				state.path
-				label
-				state.record_count
-			].join '.'
+			path = get_field_path state.record, label
 
-			item_bytes_to_read = state.buffer.readUInt32LE 4
+			if fixer = handlers[state.record.label]?[label]
+				value = fixer value, state.record
 
-			state.record =
-				bytes: item_bytes_to_read
-				end: state.bytes_read + RECORD_DETAILS_LENGTH + item_bytes_to_read
-				field_count: {}
-				fields: []
-				id: state.buffer.readUInt32LE 12
-				label: label
-				path: [
-					state.path
-					label
-					state.record_count
-				]
+			state.record.fields.push [path, value]
 
-			#make_path = R.compose R.join('.'), R.concat state.record.path
-			#make_path('size')
-
-			#flags = state.buffer.slice 8, 12
-
-			state.emit "#{base_path}.size", state.record.bytes
-
-			.then -> state.emit "#{base_path}.id", state.record.id
-
-			#.then -> state.emit "#{base_path}.revision", state.buffer.readUInt32LE 16
-
-			#.then -> state.emit "#{base_path}.version", state.buffer.readUInt16LE 20
-
-			#.then -> state.emit "#{base_path}.unknown", state.buffer.readUInt16LE 22
+			state.emit path, value
 
 			.then ->
-				state.buffer = state.buffer.slice RECORD_DETAILS_LENGTH
+				state.bytes_read += length
 
-				state.bytes_read += RECORD_DETAILS_LENGTH
+				state.buffer = state.buffer.slice length
 
 				resolve state
 
@@ -117,48 +163,6 @@
 				state.call = null
 
 				reject state
-
-
-	read_record_data = (state)->
-		new Promise (resolve, reject)->
-			if state.bytes_read < state.record.end
-				{label, length, value} = get_field state.buffer
-
-				if state.record.field_count[label]
-					state.record.field_count[label] += 1
-				else
-					state.record.field_count[label] = 1
-
-				path = R.concat state.record.path, [
-					label
-					state.record.field_count[label]
-				]
-
-				if fixer = handlers[state.record.label]?[label]
-					value = fixer value, state.record
-
-				state.record.fields.push [path, value]
-
-				state.emit path, value
-
-				.then ->
-					state.bytes_read += length
-
-					state.buffer = state.buffer.slice length
-
-					resolve state
-
-				.catch (err)->
-					console.error err
-
-					state.call = null
-
-					reject state
-
-			else
-				delete state.record
-
-				resolve state
 
 
 ## Links
