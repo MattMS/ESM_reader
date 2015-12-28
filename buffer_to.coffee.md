@@ -34,6 +34,8 @@
 
 		int16: R.invoker 1, 'readInt16LE'
 
+		label: R.compose buffer_to_ascii, R.slice(0, 4)
+
 		uint8: R.invoker 1, 'readUInt8'
 
 		uint16: R.invoker 1, 'readUInt16LE'
