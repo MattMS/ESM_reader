@@ -24,9 +24,8 @@
 		ascii: buffer_to_ascii
 
 		#char: R.compose String.fromCharCode, R.nth
-		char: (index)->
-			(buffer)->
-				String.fromCharCode R.nth index, buffer
+		char: R.curry (index, buffer)->
+			String.fromCharCode R.nth index, buffer
 
 		file_path: R.pipe buffer_to_ascii, swap_slashes
 
