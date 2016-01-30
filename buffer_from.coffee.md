@@ -4,6 +4,11 @@
 		ascii: (value)->
 			new Buffer value
 
+		float: (value)->
+			b = new Buffer 4
+			b.writeFloatLE value, 0
+			b
+
 		uint8: (value)->
 			b = new Buffer 1
 			b.writeUInt8 value, 0
