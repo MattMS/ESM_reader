@@ -9,6 +9,10 @@
     "redis": "^2.4.2"
   },
   "description": "Extract details from Fallout 3 ESM/ESP files.",
+  "devDependencies": {
+    "coffeetape": "^1.0.1",
+    "tape": "^4.4.0"
+  },
   "homepage": "https://github.com/MattMS/Fallout_3_data_reader#readme",
   "keywords": [
     "binary",
@@ -25,7 +29,7 @@
     "url": "git+https://github.com/MattMS/Fallout_3_data_reader.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "coffeetape ./test/*.coffee.md"
   },
   "version": "0.1.0"
 }
