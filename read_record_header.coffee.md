@@ -17,6 +17,11 @@
 - 2 bytes
 
 
+### Links
+
+- [Records @ UESP](http://www.uesp.net/wiki/Tes5Mod:Mod_File_Format#Records)
+
+
 ## Library imports
 
 	R = require 'ramda'
