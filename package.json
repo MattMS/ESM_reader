@@ -29,7 +29,7 @@
     "url": "git+https://github.com/MattMS/Fallout_3_data_reader.git"
   },
   "scripts": {
-    "test": "coffeetape ./test/*.coffee.md"
+    "test": "coffeetape ./test/**/*.coffee.md"
   },
   "version": "0.1.0"
 }
