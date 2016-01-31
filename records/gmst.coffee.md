@@ -10,32 +10,36 @@
 ## Exports
 
 	module.exports =
-		EDID: buffer_to.ascii
+		after: (fields)->
+			if 2 <= fields.length
+				value = fields[1].value
 
-		DATA: (value, record)->
-			if value_type = record.fields[0]?[1]?[0]
+				value_type = fields[0].value[0]
+
 				#value_type = edid_ascii[0]
 				#value_type = String.fromCharCode buffer[0]
 
-				if 'b' == value_type
-					0 < value.readUInt32LE 0
+				fields[1].value =
+					if 'b' == value_type
+						0 < value.readUInt32LE 0
 
-				else if 'i' == value_type
-					#buffer_to.uint32 0
-					value.readUInt32LE 0
+					else if 'i' == value_type
+						#buffer_to.uint32 0
+						value.readUInt32LE 0
 
-				else if 'f' == value_type
-					#buffer_to.float 0
-					value.readFloatLE 0
+					else if 'f' == value_type
+						#buffer_to.float 0
+						value.readFloatLE 0
 
-				else if 's' == value_type
-					buffer_to.ascii value
+					else if 's' == value_type
+						buffer_to.ascii value
 
-				else
-					value
+					else
+						value
 
-			else
-				value
+			fields
+
+		EDID: buffer_to.ascii
 
 
 ## Links
