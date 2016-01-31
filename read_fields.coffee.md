@@ -13,8 +13,6 @@
 
 	calculate_stop_byte = require './calculate_stop_byte'
 
-	make_object = require './make_object'
-
 
 ## Helper functions
 
@@ -36,12 +34,12 @@
 	# rest_of_buffer = calculate_then_apply [get_field_size, R.identity], R.drop
 
 	start_field_from_buffer = R.converge R.merge, [
-		R.pipe R.prop('buffer'), make_object
+		R.pipe R.prop('buffer'), ramped.make_object
 			length: get_field_size
 			name: get_field_name
 			value: get_data_buffer
 	,
-		make_object start_byte: R.prop 'last_byte'
+		ramped.make_object start_byte: R.prop 'last_byte'
 	]
 
 	calculate_field_value = R.curry (call, field)->

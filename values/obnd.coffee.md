@@ -1,15 +1,18 @@
 # OBND (object bounds)
 
-## Imports
+## Library imports
+
+	ramped = require 'ramped'
+
+
+## Relative imports
 
 	buffer_to = require '../buffer_to'
-
-	make_object = require '../make_object'
 
 
 ## Exports
 
-	module.exports = make_object
+	module.exports = ramped.make_object
 		x1: buffer_to.int16 0
 		y1: buffer_to.int16 2
 		z1: buffer_to.int16 4

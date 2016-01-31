@@ -41,13 +41,16 @@ There may be multiple references to master files.
 - 8
 
 
-## Imports
-
-	buffer_to = require '../buffer_to'
-
-	make_object = require '../make_object'
+## Library imports
 
 	R = require 'ramda'
+
+	ramped = require 'ramped'
+
+
+## Relative imports
+
+	buffer_to = require '../buffer_to'
 
 
 ## Helper functions
@@ -60,7 +63,7 @@ There may be multiple references to master files.
 	module.exports =
 		CNAM: buffer_to.ascii
 
-		HEDR: make_object
+		HEDR: ramped.make_object
 			version: R.compose float_to_fixed(2), buffer_to.float 0
 			#version: value.readFloatLE(0).toFixed 2
 

@@ -26,14 +26,14 @@
 
 	R = require 'ramda'
 
+	ramped = require 'ramped'
+
 
 ## Relative imports
 
 	buffer_to = require './buffer_to'
 
 	calculate_stop_byte = require './calculate_stop_byte'
-
-	make_object = require './make_object'
 
 
 ## Helper functions
@@ -42,7 +42,7 @@
 
 Plain version of `label` is `buffer.slice(0, 4).toString('ascii')`.
 
-	get_main_values = R.pipe R.prop('buffer'), make_object
+	get_main_values = R.pipe R.prop('buffer'), ramped.make_object
 		#flags = buffer.slice 8, 12
 
 		bytes: get_data_size
@@ -55,7 +55,7 @@ Plain version of `label` is `buffer.slice(0, 4).toString('ascii')`.
 
 	get_values_with_start = R.converge R.merge, [
 		get_main_values
-		make_object start_byte: R.prop 'last_byte'
+		ramped.make_object start_byte: R.prop 'last_byte'
 	]
 
 
