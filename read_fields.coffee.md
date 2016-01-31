@@ -81,4 +81,9 @@
 	module.exports = R.curry (call, input)->
 		get_all_fields = R.unfold unfolder call
 
-		get_all_fields input
+		fields = get_all_fields input
+
+		if call.after?
+			fields = call.after fields
+
+		fields
