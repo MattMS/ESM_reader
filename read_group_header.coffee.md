@@ -53,10 +53,9 @@
 
 	get_main_values = R.pipe R.prop('buffer'), ramped.make_object
 		bytes: buffer_to.uint32 4
-		# grup_type: buffer_to.uint32 8
 		label: buffer_to.label 8
 		# label_top: buffer_to.label 0
-		# last_edit_date: ''
+		label_type: buffer_to.uint32 12
 		last_edit_day_of_month: buffer_to.uint8 16
 		last_edit_month_since_2002_12: buffer_to.uint8 17
 		length: R.always 24

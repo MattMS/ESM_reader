@@ -34,6 +34,7 @@
 		output:
 			bytes: 256
 			label: 'GMST'
+			label_type: 3
 			last_edit_date: '2009-01-09'
 			last_edit_day_of_month: 9
 			last_edit_month_since_2002_12: 72
