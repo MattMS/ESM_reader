@@ -5,7 +5,7 @@ It is only partially implemented and barely tested.
 Come back later.
 
 This project parses the data files (esm, esp) used by Fallout 3.
-There are scripts for creating a text file or populating a Redis database.
+There are scripts for creating a text file or populating a [Redis](http://redis.io/) database.
 
 The various scripts also aim to document the file structure in a readable way.
 
