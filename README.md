@@ -31,6 +31,8 @@ npm install
 coffee output_to_file.coffee.md BrokenSteel.esm
 ```
 
+File output consists of lines of `name=value`.
+
 
 ### To Redis
 
@@ -48,6 +50,15 @@ The parser will call the `emit` function as it extracts values from the file.
 
 This may be changed later to push data to a stream instead.
 I am not sure what the best way to expose the data is.
+
+
+## Names
+
+Names are dot (`.`) separated to represent the hierarchy in the files.
+Names start with the 4 character ASCII values (group/record/field, described later) that are used in the esm/esp files.
+
+If the fields contain multiple values, then extra names have been added.
+These names do not follow the 4 character format of files to avoid future conflicts.
 
 
 ## File structure
