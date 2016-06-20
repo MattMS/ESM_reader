@@ -48,7 +48,8 @@ Plain version of `label` is `buffer.slice(0, 4).toString('ascii')`.
 		bytes: get_data_size
 		id: buffer_to.uint32 12
 		label: R.compose buffer_to.ascii, R.slice(0, 4)
-		length: R.compose R.add(24), get_data_size
+		# length: R.compose R.add(24), get_data_size
+		length: R.always 24
 		revision: buffer_to.uint32 16
 		unknown: buffer_to.uint16 22
 		version: buffer_to.uint16 20
