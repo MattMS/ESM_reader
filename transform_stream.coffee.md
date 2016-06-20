@@ -11,7 +11,11 @@
 
 ## Relative imports
 
-	read_tes4_header = require './read_tes4_header'
+	read_fields = require './read_fields'
+
+	read_record_header = require './read_record_header'
+
+	tes4 = require './records/tes4'
 
 
 ## Helper functions

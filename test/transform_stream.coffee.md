@@ -14,17 +14,17 @@
 	transform_stream = require '../transform_stream'
 
 
-## Run
+## Test data
 
 	tests = [
 		input: Buffer.concat [
 			buffer_from.ascii 'TES4'
-			buffer_from.uint32 1
-			buffer_from.uint32 2
-			buffer_from.uint32 3
-			buffer_from.uint16 4
-			buffer_from.uint16 5
-			buffer_from.uint32 6
+			buffer_from.uint32 18
+			buffer_from.uint32 0
+			buffer_from.uint32 0
+			buffer_from.uint16 0
+			buffer_from.uint16 0
+			buffer_from.uint32 0
 			buffer_from.ascii 'HEDR'
 			buffer_from.uint16 12
 			buffer_from.float 0.94
@@ -32,20 +32,19 @@
 			buffer_from.uint32 8
 		]
 
-TODO: Decide on format for `group` and `record` tracking fields.
-
 		output: [
-			# group: 1
+			bytes: 18
+			id: 0
+			label: 'TES4'
 			length: 24
-			name: 'TES4'
-			# record: 1
+			revision: 0
 			start_byte: 0
 			stop_byte: 24
+			unknown: 0
+			version: 0
 		,
-			# group: 1
 			length: 18
 			name: 'HEDR'
-			# record: 1
 			start_byte: 24
 			stop_byte: 42
 			value:
@@ -55,10 +54,13 @@ TODO: Decide on format for `group` and `record` tracking fields.
 		]
 	]
 
-	for test_data in tests
-		tape 'Read Stream', (t)->
-			t.plan 1
 
+## Run tests
+
+	tape 'Read Stream', (t)->
+		t.plan tests.length
+
+		for test_data in tests
 			desired_output = test_data.output
 
 
