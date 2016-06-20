@@ -17,6 +17,25 @@
 - 6 bytes
 
 
+### Label type
+
+| Value | Bytes | Type               | Description                          |
+| ----- | ----- | ------------------ | ------------------------------------ |
+|     0 |     4 | ASCII              | Record type                          |
+|     1 |     4 | unsigned integer   | World (WRLD) children                |
+|     2 |     4 | integer            | Interior cell block number           |
+|     3 |     4 | integer            | Interior cell sub-block number       |
+|     4 |     4 | 2 x 2 byte integer | Exterior cell block grid Y, X        |
+|     5 |     4 | 2 x 2 byte integer | Exterior cell sub-block grid Y, X    |
+|     6 |     4 | unsigned integer   | Cell (CELL) children                 |
+|     7 |     4 | unsigned integer   | Topic (DIAL) children                |
+|     8 |     4 | unsigned integer   | Persistent cell (CELL) childen       |
+|     9 |     4 | unsigned integer   | Temporary cell (CELL) children       |
+|    10 |     4 | unsigned integer   | Visible distant cell (CELL) children |
+
+- Note the reverse order of the exterior cell integers.
+
+
 ### Links
 
 - [Groups File Format @ UESP](http://www.uesp.net/wiki/Tes5Mod:Mod_File_Format#Groups)
