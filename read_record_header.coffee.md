@@ -2,19 +2,15 @@
 
 ## File structure
 
-- 4 ASCII bytes: label (usually matches group label)
-
-- 4 byte unsigned integer: size of record
-
-- 4 byte bit flags
-
-- 4 byte unsigned integer: record ID
-
-- 4 byte unsigned integer: revision ID
-
-- 2 byte unsigned integer: version
-
-- 2 bytes
+| Bytes | Type             | Description                         |
+| ----- | ---------------- | ----------------------------------- |
+|     4 | ASCII            | Label (usually matches group label) |
+|     4 | unsigned integer | Size of record                      |
+|     4 | -                | Bit flags                           |
+|     4 | unsigned integer | Record ID                           |
+|     4 | unsigned integer | Revision ID                         |
+|     2 | unsigned integer | Version                             |
+|     2 | -                | -                                   |
 
 
 ### Links
