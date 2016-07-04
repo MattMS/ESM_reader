@@ -25,11 +25,22 @@
 			buffer_from.uint16 0
 			buffer_from.uint16 0
 			buffer_from.uint32 0
+
 			buffer_from.ascii 'HEDR'
 			buffer_from.uint16 12
 			buffer_from.float 0.94
 			buffer_from.uint32 7
 			buffer_from.uint32 8
+
+			buffer_from.ascii 'GRUP'
+			buffer_from.uint32 0
+			buffer_from.ascii 'GMST'
+			buffer_from.uint32 3
+			buffer_from.uint8 9
+			buffer_from.uint8 72
+			buffer_from.uint16 6
+			buffer_from.uint16 7
+			buffer_from.uint16 8
 		]
 
 		output: [
@@ -51,6 +62,17 @@
 				next_object_id: 8
 				record_count: 7
 				version: '0.94'
+		,
+			bytes: 0
+			label: 'GMST'
+			label_type: 3
+			last_edit_date: '2009-01-09'
+			last_edit_day_of_month: 9
+			last_edit_month_since_2002_12: 72
+			length: 24
+			start_byte: 42
+			stop_byte: 66
+			version: 7
 		]
 	]
 
@@ -60,21 +82,24 @@
 	tape 'Read Stream', (t)->
 		t.plan tests.length
 
+		actual_output = {}
+		desired_output = {}
+
 		for test_data in tests
-			desired_output = test_data.output
+			transformer = transform_stream()
+
+			desired_output[transformer] = test_data.output
 
 
 ### Collect transformed data
 
-			actual_output = []
-
-			transformer = transform_stream()
+			actual_output[transformer] = []
 
 			transformer.on 'data', (chunk)->
-				actual_output.push chunk
+				actual_output[this].push chunk
 
-			transformer.on 'end', ->
-				t.deepEqual actual_output, desired_output
+			transformer.on 'end', (a)->
+				t.deepEqual actual_output[this], desired_output[this]
 
 
 ### Pipe in test input

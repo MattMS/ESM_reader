@@ -4,6 +4,7 @@
     "url": "https://github.com/MattMS/Fallout_3_data_reader/issues"
   },
   "dependencies": {
+    "bunyan": "^1.8.1",
     "ramda": "^0.19.0",
     "ramped": "^0.6.1",
     "redis": "^2.6.2",
