@@ -14,9 +14,16 @@
 	read_group_header = require '../read_group_header'
 
 
-## Run
+## Test data
 
 	tests = [
+		input:
+			buffer: new Buffer 0
+			last_byte: 0
+
+		output: {}
+
+	,
 		input:
 			buffer: Buffer.concat [
 				buffer_from.ascii 'GRUP'
@@ -43,6 +50,9 @@
 			stop_byte: 36
 			version: 7
 	]
+
+
+## Run
 
 	tape 'Read group header', (t)->
 		t.plan tests.length

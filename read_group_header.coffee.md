@@ -88,7 +88,9 @@
 		ramped.make_object start_byte: R.prop 'last_byte'
 	]
 
+	has_byte_length = R.pathSatisfies(R.gte(R.__, 24), ['buffer', 'length'])
+
 
 ## Exports
 
-	module.exports = R.pipe get_values_with_start, calculate_stop_byte, calculate_last_edit_date
+	module.exports = R.ifElse has_byte_length, R.pipe(get_values_with_start, calculate_stop_byte, calculate_last_edit_date), R.always({})
