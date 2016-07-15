@@ -2,8 +2,6 @@
 
 ## Library imports
 
-	R = require 'ramda'
-
 	tape = require 'tape'
 
 
@@ -17,37 +15,30 @@
 ## Test data
 
 	tests = [
-		input:
-			buffer: new Buffer 0
-			last_byte: 0
-
+		input: new Buffer 0
 		output: {}
 
 	,
-		input:
-			buffer: Buffer.concat [
-				buffer_from.ascii 'GRUP'
-				buffer_from.uint32 256
-				buffer_from.ascii 'GMST'
-				buffer_from.uint32 3
-				buffer_from.uint8 9
-				buffer_from.uint8 72
-				buffer_from.uint16 6
-				buffer_from.uint16 7
-				buffer_from.uint16 8
-			]
-			last_byte: 12
+		input: Buffer.concat [
+			buffer_from.ascii 'GRUP'
+			buffer_from.uint32 256
+			buffer_from.ascii 'GMST'
+			buffer_from.uint32 3
+			buffer_from.uint8 9
+			buffer_from.uint8 72
+			buffer_from.uint16 6
+			buffer_from.uint16 7
+			buffer_from.uint16 8
+		]
 
 		output:
-			bytes: 256
-			label: 'GMST'
+			bytes: 24
+			data_bytes: 256
 			label_type: 3
 			last_edit_date: '2009-01-09'
 			last_edit_day_of_month: 9
 			last_edit_month_since_2002_12: 72
-			length: 24
-			start_byte: 12
-			stop_byte: 36
+			name: 'GMST'
 			version: 7
 	]
 

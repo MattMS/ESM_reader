@@ -1,4 +1,4 @@
-# Test record
+# Test read record header
 
 ## Library imports
 
@@ -15,26 +15,22 @@
 ## Run
 
 	tests = [
-		input:
-			buffer: Buffer.concat [
-				buffer_from.ascii 'GMST'
-				buffer_from.uint32 0
-				buffer_from.uint32 1
-				buffer_from.uint32 2
-				buffer_from.uint32 3
-				buffer_from.uint16 4
-				buffer_from.uint16 5
-			]
-			last_byte: 12
+		input: Buffer.concat [
+			buffer_from.ascii 'GMST'
+			buffer_from.uint32 0
+			buffer_from.uint32 1
+			buffer_from.uint32 2
+			buffer_from.uint32 3
+			buffer_from.uint16 4
+			buffer_from.uint16 5
+		]
 
 		output:
-			bytes: 0
+			bytes: 24
+			data_bytes: 0
 			id: 2
-			label: 'GMST'
-			length: 24
+			name: 'GMST'
 			revision: 3
-			start_byte: 12
-			stop_byte: 36
 			unknown: 5
 			version: 4
 	]
