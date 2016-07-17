@@ -6,7 +6,7 @@
 
 	R = require 'ramda'
 
-	{always, append, apply, assoc, cond, identity, ifElse, inc, invoker, juxt, last, lensProp, lte, merge, mergeAll, objOf, over, pick, pipe, prop, propEq, props, sum, T, tap} = R
+	{always, append, apply, assoc, call, cond, converge, flip, identity, ifElse, inc, invoker, isNil, juxt, last, lensPath, lensProp, lte, mergeAll, objOf, over, pick, pipe, prop, propEq, props, sum, T, tap, view} = R
 
 
 ## Relative imports
@@ -18,6 +18,21 @@
 	read_group_header = require './read_group_header'
 
 	read_record_header = require './read_record_header'
+
+
+## Record handler imports
+
+	handlers =
+		ASPC: require './records/aspc'
+		DOOR: require './records/door'
+		FACT: require './records/fact'
+		GLOB: require './records/glob'
+		GMST: require './records/gmst'
+		MGEF: require './records/mgef'
+		SCPT: require './records/scpt'
+		SOUN: require './records/soun'
+		TES4: require './records/tes4'
+		TXST: require './records/txst'
 
 
 ## Logging
@@ -44,6 +59,8 @@
 
 	# ensure_array = R.unless(isArrayLike, R.of)
 
+	# get_handler_by_last_group_name = pipe(prop('group_label'), flip(prop)(handlers))
+
 	get_last_data_from_state = pipe(prop('data'), last)
 
 	inc_group_number = over(lensProp('group_number'), inc)
@@ -64,16 +81,69 @@
 	)
 
 
+### Extended helper functions
+
+These depend on functions above.
+
 	calculate_stop_byte = pipe(
 		get_last_data_from_state,
 		props(['data_bytes', 'stop_byte']),
 		sum
 	)
 
+	get_value_handler = pipe(
+		pipe(
+			juxt([
+				prop('group_label'),
+				# pipe(get_last_data_from_state, prop('name'))
+				prop('name')
+			])
+			lensPath,
+			flip(view)(handlers)
+		),
+		R.when(isNil, always(identity))
+	)
+
+	set_group_label = pipe(
+		juxt([
+			always('group_label'),
+			pipe(get_last_data_from_state, prop('label')),
+			identity
+		]),
+		apply(assoc)
+	)
+
+	set_group_stop_byte = pipe(
+		juxt([
+			always('group_stop_byte'),
+			calculate_stop_byte,
+			identity
+		]),
+		apply(assoc)
+	)
+
 	set_last_byte_from_data = pipe(
 		juxt([
 			always('last_byte'),
 			pipe(get_last_data_from_state, prop('stop_byte')),
+			identity
+		]),
+		apply(assoc)
+	)
+
+	set_record_name = pipe(
+		juxt([
+			always('record_name'),
+			pipe(get_last_data_from_state, prop('name')),
+			identity
+		]),
+		apply(assoc)
+	)
+
+	set_record_stop_byte = pipe(
+		juxt([
+			always('record_stop_byte'),
+			calculate_stop_byte,
 			identity
 		]),
 		apply(assoc)
@@ -94,23 +164,13 @@
 		apply(assoc)
 	)
 
-
-	set_group_stop_byte = pipe(
+	update_field_value = pipe(
 		juxt([
-			always('group_stop_byte'),
-			calculate_stop_byte,
-			identity
+			get_value_handler,
+			pipe(get_last_data_from_state, prop('value')),
 		]),
-		apply(assoc)
-	)
-
-	set_record_stop_byte = pipe(
-		juxt([
-			always('record_stop_byte'),
-			calculate_stop_byte,
-			identity
-		]),
-		apply(assoc)
+		apply(call),
+		call
 	)
 
 
@@ -126,14 +186,21 @@ The appropriate one is chosen by the `single_pass` switching function.
 				juxt([
 					pipe(prop('buffer'), read_field),
 					pipe(prop('last_byte'), objOf('start_byte')),
-					pick(['group_number', 'record_number']),
+					pick(['group_label', 'group_number', 'record_name', 'record_number']),
 				]),
 				mergeAll,
+				# tap((d)-> console.log d),
+				converge(
+					over(lensProp('value')),
+					[
+						get_value_handler,
+						identity
+					]
+				),
 				add_stop_byte
 			)
 		),
-		trim_buffer_bytes,
-		set_last_byte_from_data
+		trim_buffer_bytes
 	)
 
 
@@ -153,8 +220,8 @@ The appropriate one is chosen by the `single_pass` switching function.
 			)
 		),
 		trim_buffer_bytes,
-		set_group_stop_byte,
-		set_last_byte_from_data
+		set_group_label,
+		set_group_stop_byte
 	)
 
 
@@ -173,8 +240,8 @@ The appropriate one is chosen by the `single_pass` switching function.
 		),
 		trim_buffer_bytes,
 		inc_record_number,
-		set_record_stop_byte,
-		set_last_byte_from_data
+		set_record_name,
+		set_record_stop_byte
 	)
 
 
@@ -182,18 +249,25 @@ The appropriate one is chosen by the `single_pass` switching function.
 
 Decide which function should be called to process the Buffer.
 
-	single_pass = cond([
+	pick_parser = cond([
 		[
 			passed_group_stop,
 			ifElse(
 				propEq('group_number', 0),
-				pipe(inc_group_number, start_new_record, set_group_stop_from_record_stop),
+				pipe(
+					inc_group_number,
+					start_new_record,
+					# set_group_label,
+					set_group_stop_from_record_stop
+				),
 				start_new_group
 			)
 		]
 		[passed_record_stop, start_new_record]
 		[T, read_field_from_state]
 	])
+
+	single_pass = pipe(pick_parser, set_last_byte_from_data)
 
 
 ## Exports

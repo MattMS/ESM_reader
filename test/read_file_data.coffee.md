@@ -43,9 +43,11 @@
 			]
 
 			data: []
+			group_label: 'TES4'
 			group_number: 0
 			group_stop_byte: 0
 			last_byte: 0
+			# record_name: 'TES4'
 			record_number: 0
 			record_stop_byte: 0
 
@@ -66,8 +68,10 @@
 				version: 0
 			,
 				bytes: 18
+				group_label: 'TES4'
 				group_number: 1
 				name: 'HEDR'
+				record_name: 'TES4'
 				record_number: 1
 				start_byte: 24
 				stop_byte: 42
@@ -79,20 +83,23 @@
 				bytes: 24
 				data_bytes: 0
 				group_number: 2
+				label: 'GMST'
 				label_type: 3
 				last_edit_date: '2009-01-09'
 				last_edit_day_of_month: 9
 				last_edit_month_since_2002_12: 72
-				name: 'GMST'
+				name: 'GRUP'
 				record_number: 1
 				start_byte: 42
 				stop_byte: 66
 				version: 7
 			]
 
+			group_label: 'GMST'
 			group_number: 2
 			group_stop_byte: 66
-			last_byte: 0
+			last_byte: 66
+			record_name: 'TES4'
 			record_number: 1
 			record_stop_byte: 42
 	]
