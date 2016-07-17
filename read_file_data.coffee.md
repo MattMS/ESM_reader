@@ -59,26 +59,21 @@
 
 	# ensure_array = R.unless(isArrayLike, R.of)
 
-	# get_handler_by_last_group_name = pipe(prop('group_label'), flip(prop)(handlers))
-
 	get_last_data_from_state = pipe(prop('data'), last)
 
 	inc_group_number = over(lensProp('group_number'), inc)
 
 	inc_record_number = over(lensProp('record_number'), inc)
 
-	passed_group_stop = pipe(juxt([prop('group_stop_byte'), prop('last_byte')]), apply(lte))
+	passed_group_stop = converge(lte, [prop('group_stop_byte'), prop('last_byte')])
 
-	passed_record_stop = pipe(juxt([prop('record_stop_byte'), prop('last_byte')]), apply(lte))
+	passed_record_stop = converge(lte, [prop('record_stop_byte'), prop('last_byte')])
 
-	set_group_stop_from_record_stop = pipe(
-		juxt([
-			always('group_stop_byte'),
-			prop('record_stop_byte'),
-			identity
-		]),
-		apply(assoc)
-	)
+	set_group_stop_from_record_stop = converge(assoc, [
+		always('group_stop_byte'),
+		prop('record_stop_byte'),
+		identity
+	])
 
 
 ### Extended helper functions
@@ -95,7 +90,6 @@ These depend on functions above.
 		pipe(
 			juxt([
 				prop('group_label'),
-				# pipe(get_last_data_from_state, prop('name'))
 				prop('name')
 			])
 			lensPath,
@@ -104,73 +98,54 @@ These depend on functions above.
 		R.when(isNil, always(identity))
 	)
 
-	set_group_label = pipe(
-		juxt([
-			always('group_label'),
-			pipe(get_last_data_from_state, prop('label')),
-			identity
-		]),
-		apply(assoc)
-	)
+	set_group_label = converge(assoc, [
+		always('group_label'),
+		pipe(get_last_data_from_state, prop('label')),
+		identity
+	])
 
-	set_group_stop_byte = pipe(
-		juxt([
-			always('group_stop_byte'),
-			calculate_stop_byte,
-			identity
-		]),
-		apply(assoc)
-	)
+	set_group_stop_byte = converge(assoc, [
+		always('group_stop_byte'),
+		calculate_stop_byte,
+		identity
+	])
 
-	set_last_byte_from_data = pipe(
-		juxt([
-			always('last_byte'),
-			pipe(get_last_data_from_state, prop('stop_byte')),
-			identity
-		]),
-		apply(assoc)
-	)
+	set_last_byte_from_data = converge(assoc, [
+		always('last_byte'),
+		pipe(get_last_data_from_state, prop('stop_byte')),
+		identity
+	])
 
-	set_record_name = pipe(
-		juxt([
-			always('record_name'),
-			pipe(get_last_data_from_state, prop('name')),
-			identity
-		]),
-		apply(assoc)
-	)
+	set_record_name = converge(assoc, [
+		always('record_name'),
+		pipe(get_last_data_from_state, prop('name')),
+		identity
+	])
 
-	set_record_stop_byte = pipe(
-		juxt([
-			always('record_stop_byte'),
-			calculate_stop_byte,
-			identity
-		]),
-		apply(assoc)
-	)
+	set_record_stop_byte = converge(assoc, [
+		always('record_stop_byte'),
+		calculate_stop_byte,
+		identity
+	])
 
-	trim_buffer_bytes = pipe(
-		juxt([
-			always('buffer'),
-			pipe(
-				juxt([
-					pipe(get_last_data_from_state, prop('bytes')),
-					prop('buffer')
-				]),
-				apply(drop_from_buffer)
-			),
-			identity
-		]),
-		apply(assoc)
-	)
+	trim_buffer_bytes = converge(assoc, [
+		always('buffer'),
+		pipe(
+			juxt([
+				pipe(get_last_data_from_state, prop('bytes')),
+				prop('buffer')
+			]),
+			apply(drop_from_buffer)
+		),
+		identity
+	])
 
-	update_field_value = pipe(
-		juxt([
+	update_field_value = converge(
+		over(lensProp('value')),
+		[
 			get_value_handler,
-			pipe(get_last_data_from_state, prop('value')),
-		]),
-		apply(call),
-		call
+			identity
+		]
 	)
 
 
@@ -189,14 +164,7 @@ The appropriate one is chosen by the `single_pass` switching function.
 					pick(['group_label', 'group_number', 'record_name', 'record_number']),
 				]),
 				mergeAll,
-				# tap((d)-> console.log d),
-				converge(
-					over(lensProp('value')),
-					[
-						get_value_handler,
-						identity
-					]
-				),
+				update_field_value,
 				add_stop_byte
 			)
 		),
@@ -257,7 +225,6 @@ Decide which function should be called to process the Buffer.
 				pipe(
 					inc_group_number,
 					start_new_record,
-					# set_group_label,
 					set_group_stop_from_record_stop
 				),
 				start_new_group
