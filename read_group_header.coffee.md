@@ -40,7 +40,7 @@
 
 	R = require 'ramda'
 
-	{assoc, always, applySpec, converge, identity, ifElse, invoker, lensProp, lte, over, pipe, prop, propSatisfies} = R
+	{assoc, always, applySpec, converge, identity, ifElse, invoker, lte, pipe, prop, propSatisfies} = R
 
 
 ## Relative imports
