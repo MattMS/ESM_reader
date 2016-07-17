@@ -40,9 +40,7 @@
 
 	R = require 'ramda'
 
-	{always, applySpec, ifElse, lte, pipe, propSatisfies} = R
-
-	ramped = require 'ramped'
+	{assoc, always, applySpec, converge, identity, ifElse, invoker, lensProp, lte, over, pipe, prop, propSatisfies} = R
 
 
 ## Relative imports
@@ -52,18 +50,23 @@
 
 ## Helper functions
 
-	calculate_last_edit_date = ramped.evolve_with_input
-		last_edit_date: (value)->
-			get_date_since_2002_12 value.last_edit_month_since_2002_12, value.last_edit_day_of_month
-
 	get_date_since_2002_12 = (months, day_of_month)->
 		last_edit = new Date 2002, 12, 1
 
+		# invoker('setMonth')(prop('last_edit_month_since_2002_12'))
 		last_edit.setMonth months
 
 		last_edit.setDate day_of_month + 1
 
 		last_edit.toISOString().slice(0, 10)
+
+	calculate_last_edit_date = converge(assoc('last_edit_date'), [
+		converge(get_date_since_2002_12, [
+			prop('last_edit_month_since_2002_12'),
+			prop('last_edit_day_of_month')
+		]),
+		identity
+	])
 
 	get_main_values = applySpec
 		bytes: always 24
