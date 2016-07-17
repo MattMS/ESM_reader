@@ -2,7 +2,7 @@
 
 ## Library imports
 
-	{add, always, apply, applySpec, both, identity, ifElse, invoker, juxt, length, lte, pipe, slice} = require 'ramda'
+	{add, always, applySpec, both, converge, identity, ifElse, invoker, length, lte, pipe, slice} = require 'ramda'
 
 
 ## Relative imports
@@ -28,17 +28,14 @@
 	get_main_values = applySpec
 		bytes: get_full_field_size
 		name: get_field_name
-		value: pipe(juxt([always(6), get_full_field_size, identity]), apply(slice_from_buffer))
+		value: converge(slice_from_buffer, [always(6), get_full_field_size, identity])
 
 
 First ensure that there are 6 bytes (to get the size bytes) then calculate and check the full size.
 
 	has_byte_length = both(
 		pipe(length, lte(6)),
-		pipe(
-			juxt([get_full_field_size, length]),
-			apply(lte)
-		)
+		converge(lte, [get_full_field_size, length]),
 	)
 
 
