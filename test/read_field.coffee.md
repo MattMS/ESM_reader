@@ -16,7 +16,8 @@
 
 	tests = [
 		input: new Buffer 0
-		output: {}
+		output:
+			bytes: 0
 
 	,
 		input: Buffer.concat [
@@ -35,10 +36,6 @@
 				buffer_from.uint32 7
 				buffer_from.uint32 8
 			]
-			# value:
-			# 	next_object_id: 8
-			# 	record_count: 7
-			# 	version: '0.94'
 	]
 
 

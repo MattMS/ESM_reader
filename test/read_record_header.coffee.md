@@ -15,6 +15,11 @@
 ## Run
 
 	tests = [
+		input: new Buffer 0
+		output:
+			bytes: 0
+
+	,
 		input: Buffer.concat [
 			buffer_from.ascii 'GMST'
 			buffer_from.uint32 0

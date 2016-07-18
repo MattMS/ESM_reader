@@ -86,7 +86,7 @@
 
 ## Exports
 
-	module.exports = ifElse(has_byte_length, pipe(get_main_values, calculate_last_edit_date), always({}))
+	module.exports = ifElse(has_byte_length, pipe(get_main_values, calculate_last_edit_date), always({bytes: 0}))
 
 
 ## Links

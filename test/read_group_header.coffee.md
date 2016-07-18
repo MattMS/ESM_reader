@@ -16,7 +16,8 @@
 
 	tests = [
 		input: new Buffer 0
-		output: {}
+		output:
+			bytes: 0
 
 	,
 		input: Buffer.concat [

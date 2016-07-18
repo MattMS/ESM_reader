@@ -41,4 +41,4 @@ First ensure that there are 6 bytes (to get the size bytes) then calculate and c
 
 ## Exports
 
-	module.exports = ifElse(has_byte_length, get_main_values, always({}))
+	module.exports = ifElse(has_byte_length, get_main_values, always({bytes: 0}))
