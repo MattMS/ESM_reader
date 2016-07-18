@@ -55,30 +55,22 @@
 	append_over = R.curry (lens, func, obj)->
 		over(lens, append(func(obj)), obj)
 
-	drop_from_buffer = invoker(1, 'slice')
-
 	# ensure_array = R.unless(isArrayLike, R.of)
 
 	get_last_data_from_state = pipe(prop('data'), last)
 
-	inc_group_number = over(lensProp('group_number'), inc)
 
-	inc_record_number = over(lensProp('record_number'), inc)
+## Buffer parsers
 
-	passed_group_stop = converge(lte, [prop('group_stop_byte'), prop('last_byte')])
+These functions are the different types of Buffer processors that can be called.
+The appropriate one is chosen by the `single_pass` switching function.
 
-	passed_record_stop = converge(lte, [prop('record_stop_byte'), prop('last_byte')])
-
-	set_group_stop_from_record_stop = converge(assoc, [
-		always('group_stop_byte'),
-		prop('record_stop_byte'),
-		identity
-	])
+They are defined in the order that they will be found in a file (group > record > fields).
 
 
-### Extended helper functions
+### Common parsing functions
 
-These depend on functions above.
+These provide common functionality used by each of the parsers.
 
 	calculate_stop_byte = pipe(
 		get_last_data_from_state,
@@ -86,47 +78,7 @@ These depend on functions above.
 		sum
 	)
 
-	get_value_handler = pipe(
-		pipe(
-			juxt([
-				prop('group_label'),
-				prop('name')
-			])
-			lensPath,
-			flip(view)(handlers)
-		),
-		R.when(isNil, always(identity))
-	)
-
-	set_group_label = converge(assoc, [
-		always('group_label'),
-		pipe(get_last_data_from_state, prop('label')),
-		identity
-	])
-
-	set_group_stop_byte = converge(assoc, [
-		always('group_stop_byte'),
-		calculate_stop_byte,
-		identity
-	])
-
-	set_last_byte_from_data = converge(assoc, [
-		always('last_byte'),
-		pipe(get_last_data_from_state, prop('stop_byte')),
-		identity
-	])
-
-	set_record_name = converge(assoc, [
-		always('record_name'),
-		pipe(get_last_data_from_state, prop('name')),
-		identity
-	])
-
-	set_record_stop_byte = converge(assoc, [
-		always('record_stop_byte'),
-		calculate_stop_byte,
-		identity
-	])
+	drop_from_buffer = invoker(1, 'slice')
 
 	trim_buffer_bytes = converge(assoc, [
 		always('buffer'),
@@ -140,24 +92,22 @@ These depend on functions above.
 		identity
 	])
 
-	update_field_value = converge(
-		over(lensProp('value')),
-		[
-			get_value_handler,
-			identity
-		]
-	)
-
-
-## Buffer parsers
-
-These functions are the different types of Buffer processors that can be called.
-The appropriate one is chosen by the `single_pass` switching function.
-
-They are defined in the order that they will be found in a file.
-
 
 ### Start group
+
+	inc_group_number = over(lensProp('group_number'), inc)
+
+	set_group_label = converge(assoc, [
+		always('group_label'),
+		pipe(get_last_data_from_state, prop('label')),
+		identity
+	])
+
+	set_group_stop_byte = converge(assoc, [
+		always('group_stop_byte'),
+		calculate_stop_byte,
+		identity
+	])
 
 	start_new_group = pipe(
 		inc_group_number,
@@ -182,6 +132,20 @@ They are defined in the order that they will be found in a file.
 
 ### Start record
 
+	inc_record_number = over(lensProp('record_number'), inc)
+
+	set_record_name = converge(assoc, [
+		always('record_name'),
+		pipe(get_last_data_from_state, prop('name')),
+		identity
+	])
+
+	set_record_stop_byte = converge(assoc, [
+		always('record_stop_byte'),
+		calculate_stop_byte,
+		identity
+	])
+
 	start_new_record = pipe(
 		append_over(
 			lensProp('data'),
@@ -203,6 +167,26 @@ They are defined in the order that they will be found in a file.
 
 
 ### Read field data
+
+	get_value_handler = pipe(
+		pipe(
+			juxt([
+				prop('group_label'),
+				prop('name')
+			])
+			lensPath,
+			flip(view)(handlers)
+		),
+		R.when(isNil, always(identity))
+	)
+
+	update_field_value = converge(
+		over(lensProp('value')),
+		[
+			get_value_handler,
+			identity
+		]
+	)
 
 	read_field_from_state = pipe(
 		append_over(
@@ -226,6 +210,16 @@ They are defined in the order that they will be found in a file.
 
 Decide which function should be called to process the Buffer.
 
+	passed_group_stop = converge(lte, [prop('group_stop_byte'), prop('last_byte')])
+
+	passed_record_stop = converge(lte, [prop('record_stop_byte'), prop('last_byte')])
+
+	set_group_stop_from_record_stop = converge(assoc, [
+		always('group_stop_byte'),
+		prop('record_stop_byte'),
+		identity
+	])
+
 	pick_parser = cond([
 		[
 			passed_group_stop,
@@ -241,6 +235,12 @@ Decide which function should be called to process the Buffer.
 		]
 		[passed_record_stop, start_new_record]
 		[T, read_field_from_state]
+	])
+
+	set_last_byte_from_data = converge(assoc, [
+		always('last_byte'),
+		pipe(get_last_data_from_state, prop('stop_byte')),
+		identity
 	])
 
 	single_pass = pipe(pick_parser, set_last_byte_from_data)
