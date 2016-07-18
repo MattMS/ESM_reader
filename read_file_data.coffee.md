@@ -149,28 +149,15 @@ These depend on functions above.
 	)
 
 
-## Main functions
+## Buffer parsers
 
 These functions are the different types of Buffer processors that can be called.
 The appropriate one is chosen by the `single_pass` switching function.
 
-	read_field_from_state = pipe(
-		append_over(
-			lensProp('data'),
-			pipe(
-				juxt([
-					pipe(prop('buffer'), read_field),
-					pipe(prop('last_byte'), objOf('start_byte')),
-					pick(['group_label', 'group_number', 'record_name', 'record_number']),
-				]),
-				mergeAll,
-				update_field_value,
-				add_stop_byte
-			)
-		),
-		trim_buffer_bytes
-	)
+They are defined in the order that they will be found in a file.
 
+
+### Start group
 
 	start_new_group = pipe(
 		inc_group_number,
@@ -193,6 +180,8 @@ The appropriate one is chosen by the `single_pass` switching function.
 	)
 
 
+### Start record
+
 	start_new_record = pipe(
 		append_over(
 			lensProp('data'),
@@ -213,7 +202,27 @@ The appropriate one is chosen by the `single_pass` switching function.
 	)
 
 
-## Single pass
+### Read field data
+
+	read_field_from_state = pipe(
+		append_over(
+			lensProp('data'),
+			pipe(
+				juxt([
+					pipe(prop('buffer'), read_field),
+					pipe(prop('last_byte'), objOf('start_byte')),
+					pick(['group_label', 'group_number', 'record_name', 'record_number']),
+				]),
+				mergeAll,
+				update_field_value,
+				add_stop_byte
+			)
+		),
+		trim_buffer_bytes
+	)
+
+
+## Pick parser
 
 Decide which function should be called to process the Buffer.
 
