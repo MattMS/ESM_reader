@@ -6,7 +6,7 @@
 
 	R = require 'ramda'
 
-	{always, append, apply, assoc, both, call, cond, converge, flip, identity, ifElse, inc, invoker, isArrayLike, isNil, juxt, last, lensPath, lensProp, lte, mergeAll, objOf, over, pick, pipe, prop, propEq, props, sum, T, tap, view, where} = R
+	{always, append, apply, assoc, both, call, cond, converge, dec, dropLast, flip, identity, ifElse, inc, invoker, isArrayLike, isNil, juxt, last, lensPath, lensProp, lte, mergeAll, objOf, over, pick, pipe, prop, propEq, props, sum, T, tap, view, where} = R
 
 
 ## Relative imports
@@ -78,7 +78,13 @@ These provide common functionality used by each of the parsers.
 		sum
 	)
 
+	dec_group_number = over(lensProp('group_number'), dec)
+
 	drop_from_buffer = invoker(1, 'slice')
+
+	inc_group_number = over(lensProp('group_number'), inc)
+
+	last_record_is_empty = pipe(get_last_data_from_state, propEq('bytes', 0))
 
 	trim_buffer_bytes = converge(assoc, [
 		always('buffer'),
@@ -94,8 +100,6 @@ These provide common functionality used by each of the parsers.
 
 
 ### Start group
-
-	inc_group_number = over(lensProp('group_number'), inc)
 
 	set_group_label = converge(assoc, [
 		always('group_label'),
@@ -124,9 +128,11 @@ These provide common functionality used by each of the parsers.
 				add_stop_byte
 			)
 		),
-		trim_buffer_bytes,
-		set_group_label,
-		set_group_stop_byte
+		ifElse(last_record_is_empty, dec_group_number, pipe(
+			trim_buffer_bytes,
+			set_group_label,
+			set_group_stop_byte
+		))
 	)
 
 
@@ -159,10 +165,27 @@ These provide common functionality used by each of the parsers.
 				add_stop_byte
 			),
 		),
-		trim_buffer_bytes,
-		inc_record_number,
-		set_record_name,
-		set_record_stop_byte
+		R.unless(last_record_is_empty, pipe(
+			trim_buffer_bytes,
+			inc_record_number,
+			set_record_name,
+			set_record_stop_byte
+		))
+	)
+
+
+### TES4 record (file start)
+
+	set_group_stop_from_record_stop = converge(assoc, [
+		always('group_stop_byte'),
+		prop('record_stop_byte'),
+		identity
+	])
+
+	parse_TES4_record = pipe(
+		inc_group_number,
+		start_new_record,
+		ifElse(last_record_is_empty, dec_group_number, set_group_stop_from_record_stop)
 	)
 
 
@@ -188,19 +211,21 @@ These provide common functionality used by each of the parsers.
 		]
 	)
 
+	make_field_object_from_state = pipe(
+		juxt([
+			pipe(prop('buffer'), read_field),
+			pipe(prop('last_byte'), objOf('start_byte')),
+			pick(['group_label', 'group_number', 'record_name', 'record_number']),
+		]),
+		mergeAll,
+		update_field_value,
+		add_stop_byte
+	)
+
 	read_field_from_state = pipe(
 		append_over(
 			lensProp('data'),
-			pipe(
-				juxt([
-					pipe(prop('buffer'), read_field),
-					pipe(prop('last_byte'), objOf('start_byte')),
-					pick(['group_label', 'group_number', 'record_name', 'record_number']),
-				]),
-				mergeAll,
-				update_field_value,
-				add_stop_byte
-			)
+			make_field_object_from_state
 		),
 		trim_buffer_bytes
 	)
@@ -214,22 +239,12 @@ Decide which function should be called to process the Buffer.
 
 	passed_record_stop = converge(lte, [prop('record_stop_byte'), prop('last_byte')])
 
-	set_group_stop_from_record_stop = converge(assoc, [
-		always('group_stop_byte'),
-		prop('record_stop_byte'),
-		identity
-	])
-
 	pick_parser = cond([
 		[
 			passed_group_stop,
 			ifElse(
 				propEq('group_number', 0),
-				pipe(
-					inc_group_number,
-					start_new_record,
-					set_group_stop_from_record_stop
-				),
+				parse_TES4_record,
 				start_new_group
 			)
 		]
@@ -237,13 +252,18 @@ Decide which function should be called to process the Buffer.
 		[T, read_field_from_state]
 	])
 
+	remove_last_record = over(lensProp('data'), dropLast(1))
+
 	set_last_byte_from_data = converge(assoc, [
 		always('last_byte'),
 		pipe(get_last_data_from_state, prop('stop_byte')),
 		identity
 	])
 
-	single_pass = pipe(pick_parser, set_last_byte_from_data)
+	single_pass = pipe(
+		pick_parser,
+		ifElse(last_record_is_empty, remove_last_record, set_last_byte_from_data)
+	)
 
 
 ## Main loop
