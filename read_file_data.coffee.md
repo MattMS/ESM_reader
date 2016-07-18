@@ -6,7 +6,7 @@
 
 	R = require 'ramda'
 
-	{always, append, apply, assoc, both, call, cond, converge, dec, dropLast, flip, identity, ifElse, inc, invoker, isArrayLike, isNil, juxt, last, lensPath, lensProp, lte, mergeAll, objOf, over, pick, pipe, prop, propEq, props, sum, T, tap, view, where} = R
+	{always, append, apply, assoc, both, call, cond, converge, dec, either, F, flip, identity, ifElse, inc, invoker, isNil, juxt, last, lensPath, lensProp, lte, mergeAll, objOf, over, pick, pipe, prop, propEq, props, sum, T, tap, view, where} = R
 
 
 ## Relative imports
@@ -44,20 +44,10 @@
 				'buffer'
 				'group_number'
 				'group_stop_byte'
-				'last_byte'
 				'record_number'
 				'record_stop_byte'
+				'stop_byte'
 			])
-
-
-## Helper functions
-
-	append_over = R.curry (lens, func, obj)->
-		over(lens, append(func(obj)), obj)
-
-	# ensure_array = R.unless(isArrayLike, R.of)
-
-	get_last_data_from_state = pipe(prop('data'), last)
 
 
 ## Buffer parsers
@@ -73,7 +63,6 @@ They are defined in the order that they will be found in a file (group > record 
 These provide common functionality used by each of the parsers.
 
 	calculate_stop_byte = pipe(
-		get_last_data_from_state,
 		props(['data_bytes', 'stop_byte']),
 		sum
 	)
@@ -82,19 +71,27 @@ These provide common functionality used by each of the parsers.
 
 	drop_from_buffer = invoker(1, 'slice')
 
+	get_common_props = pick([
+		'buffer',
+		'group_label',
+		'group_number',
+		'group_stop_byte',
+		'record_name',
+		'record_number',
+		'record_stop_byte',
+		'stop_byte'
+	])
+
 	inc_group_number = over(lensProp('group_number'), inc)
 
-	last_record_is_empty = pipe(get_last_data_from_state, propEq('bytes', 0))
+	last_record_is_empty = propEq('bytes', 0)
 
 	trim_buffer_bytes = converge(assoc, [
 		always('buffer'),
-		pipe(
-			juxt([
-				pipe(get_last_data_from_state, prop('bytes')),
-				prop('buffer')
-			]),
-			apply(drop_from_buffer)
-		),
+		converge(drop_from_buffer, [
+			prop('bytes'),
+			prop('buffer')
+		]),
 		identity
 	])
 
@@ -103,7 +100,7 @@ These provide common functionality used by each of the parsers.
 
 	set_group_label = converge(assoc, [
 		always('group_label'),
-		pipe(get_last_data_from_state, prop('label')),
+		prop('label'),
 		identity
 	])
 
@@ -115,18 +112,15 @@ These provide common functionality used by each of the parsers.
 
 	start_new_group = pipe(
 		inc_group_number,
-		append_over(
-			lensProp('data'),
-			pipe(
-				juxt([
-					pipe(prop('buffer'), read_group_header),
-					pipe(prop('last_byte'), objOf('start_byte')),
-					pick(['group_number']),
-					always(record_number: 1)
-				]),
-				mergeAll,
-				add_stop_byte
-			)
+		pipe(
+			juxt([
+				get_common_props,
+				pipe(prop('buffer'), read_group_header),
+				pipe(prop('stop_byte'), objOf('start_byte')),
+				always({record_number: 1})
+			]),
+			mergeAll,
+			add_stop_byte
 		),
 		ifElse(last_record_is_empty, dec_group_number, pipe(
 			trim_buffer_bytes,
@@ -142,7 +136,7 @@ These provide common functionality used by each of the parsers.
 
 	set_record_name = converge(assoc, [
 		always('record_name'),
-		pipe(get_last_data_from_state, prop('name')),
+		prop('name'),
 		identity
 	])
 
@@ -153,17 +147,14 @@ These provide common functionality used by each of the parsers.
 	])
 
 	start_new_record = pipe(
-		append_over(
-			lensProp('data'),
-			pipe(
-				juxt([
-					pipe(prop('buffer'), read_record_header),
-					pipe(prop('last_byte'), objOf('start_byte')),
-					pick(['group_number', 'record_number']),
-				]),
-				mergeAll,
-				add_stop_byte
-			),
+		pipe(
+			juxt([
+				get_common_props,
+				pipe(prop('buffer'), read_record_header),
+				pipe(prop('stop_byte'), objOf('start_byte')),
+			]),
+			mergeAll,
+			add_stop_byte
 		),
 		R.unless(last_record_is_empty, pipe(
 			trim_buffer_bytes,
@@ -213,9 +204,9 @@ These provide common functionality used by each of the parsers.
 
 	make_field_object_from_state = pipe(
 		juxt([
+			get_common_props,
 			pipe(prop('buffer'), read_field),
-			pipe(prop('last_byte'), objOf('start_byte')),
-			pick(['group_label', 'group_number', 'record_name', 'record_number']),
+			pipe(prop('stop_byte'), objOf('start_byte')),
 		]),
 		mergeAll,
 		update_field_value,
@@ -223,10 +214,7 @@ These provide common functionality used by each of the parsers.
 	)
 
 	read_field_from_state = pipe(
-		append_over(
-			lensProp('data'),
-			make_field_object_from_state
-		),
+		make_field_object_from_state,
 		trim_buffer_bytes
 	)
 
@@ -235,9 +223,9 @@ These provide common functionality used by each of the parsers.
 
 Decide which function should be called to process the Buffer.
 
-	passed_group_stop = converge(lte, [prop('group_stop_byte'), prop('last_byte')])
+	passed_group_stop = converge(lte, [prop('group_stop_byte'), prop('stop_byte')])
 
-	passed_record_stop = converge(lte, [prop('record_stop_byte'), prop('last_byte')])
+	passed_record_stop = converge(lte, [prop('record_stop_byte'), prop('stop_byte')])
 
 	pick_parser = cond([
 		[
@@ -252,29 +240,28 @@ Decide which function should be called to process the Buffer.
 		[T, read_field_from_state]
 	])
 
-	remove_last_record = over(lensProp('data'), dropLast(1))
-
-	set_last_byte_from_data = converge(assoc, [
-		always('last_byte'),
-		pipe(get_last_data_from_state, prop('stop_byte')),
-		identity
-	])
-
-	single_pass = pipe(
-		pick_parser,
-		ifElse(last_record_is_empty, remove_last_record, set_last_byte_from_data)
-	)
-
 
 ## Main loop
 
-TODO: Maybe create an `unfold` function here for looping the Buffer.
+TODO: Get the following function working to replace the one after it.
+
+	main_loop = R.unfold(
+		ifElse(
+			either(pipe(R.propSatisfies(isNil, 'bytes'), R.not), propEq('bytes', 0)),
+			F,
+			juxt([identity, pipe(identity, pick_parser)])
+		)
+	)
 
 	main_loop = (state)->
-		for i in [1,2,3]
-			state = single_pass(state)
+		looper = (list, state)->
+			result = pick_parser(state)
+			if result.bytes == 0
+				list
+			else
+				looper(append(result, list), result)
 
-		state
+		looper([], state)
 
 
 ## Verify input
@@ -283,19 +270,18 @@ Make sure that the object passed in has the properties required for parsing.
 
 	input_passes_spec = where
 		buffer: R.is(Buffer)
-		data: isArrayLike
 		group_label: R.is(String)
 		group_number: R.is(Number)
 		group_stop_byte: R.is(Number)
-		last_byte: R.is(Number)
 		record_number: R.is(Number)
 		record_stop_byte: R.is(Number)
+		stop_byte: R.is(Number)
 
 	verify_input = both(R.is(Object), input_passes_spec)
 
 
 ## Exports
 
-	module.exports = ifElse(verify_input, main_loop, always({}))
+	module.exports = ifElse(verify_input, main_loop, always([]))
 
 	# module.exports.log = log
