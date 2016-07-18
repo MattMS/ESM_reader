@@ -243,25 +243,12 @@ Decide which function should be called to process the Buffer.
 
 ## Main loop
 
-TODO: Get the following function working to replace the one after it.
-
 	main_loop = R.unfold(
-		ifElse(
-			either(pipe(R.propSatisfies(isNil, 'bytes'), R.not), propEq('bytes', 0)),
-			F,
-			juxt([identity, pipe(identity, pick_parser)])
+		pipe(
+			pick_parser,
+			ifElse(propEq('bytes', 0), F, juxt([identity, identity]))
 		)
 	)
-
-	main_loop = (state)->
-		looper = (list, state)->
-			result = pick_parser(state)
-			if result.bytes == 0
-				list
-			else
-				looper(append(result, list), result)
-
-		looper([], state)
 
 
 ## Verify input
