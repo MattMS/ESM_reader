@@ -6,7 +6,7 @@
 
 	R = require 'ramda'
 
-	{always, append, apply, assoc, call, cond, converge, flip, identity, ifElse, inc, invoker, isNil, juxt, last, lensPath, lensProp, lte, mergeAll, objOf, over, pick, pipe, prop, propEq, props, sum, T, tap, view} = R
+	{always, append, apply, assoc, both, call, cond, converge, flip, identity, ifElse, inc, invoker, isArrayLike, isNil, juxt, last, lensPath, lensProp, lte, mergeAll, objOf, over, pick, pipe, prop, propEq, props, sum, T, tap, view, where} = R
 
 
 ## Relative imports
@@ -246,14 +246,36 @@ Decide which function should be called to process the Buffer.
 	single_pass = pipe(pick_parser, set_last_byte_from_data)
 
 
-## Exports
+## Main loop
 
 TODO: Maybe create an `unfold` function here for looping the Buffer.
 
-	module.exports = (state)->
+	main_loop = (state)->
 		for i in [1,2,3]
 			state = single_pass(state)
 
 		state
+
+
+## Verify input
+
+Make sure that the object passed in has the properties required for parsing.
+
+	input_passes_spec = where
+		buffer: R.is(Buffer)
+		data: isArrayLike
+		group_label: R.is(String)
+		group_number: R.is(Number)
+		group_stop_byte: R.is(Number)
+		last_byte: R.is(Number)
+		record_number: R.is(Number)
+		record_stop_byte: R.is(Number)
+
+	verify_input = both(R.is(Object), input_passes_spec)
+
+
+## Exports
+
+	module.exports = ifElse(verify_input, main_loop, always({}))
 
 	# module.exports.log = log
