@@ -15,6 +15,31 @@
 ## Test data
 
 	tests = [
+		input: {}
+		output: {}
+
+	,
+		input:
+			buffer: new Buffer(0)
+			data: []
+			group_label: 'TES4'
+			group_number: 0
+			group_stop_byte: 0
+			last_byte: 0
+			record_number: 0
+			record_stop_byte: 0
+
+		output:
+			buffer: new Buffer(0)
+			data: []
+			group_label: 'TES4'
+			group_number: 0
+			group_stop_byte: 0
+			last_byte: 0
+			record_number: 0
+			record_stop_byte: 0
+
+	,
 		input:
 			buffer: Buffer.concat [
 				buffer_from.ascii 'TES4'
