@@ -1,19 +1,28 @@
 # Read Fallout 3 data files
 
-## Imports
+## Library imports
 
 	fs = require 'fs'
 
-	process_stream = require './process_stream'
-
 	R = require 'ramda'
+
+	{cond, converge, identity, invoker, join, pipe, prop, T, unapply} = R
 
 	redis = require 'redis'
 
+	stream = require 'stream'
 
-## Run!
+	through2 = require 'through2'
 
-	file_path = process.argv[2]
+
+## Relative imports
+
+	get_storage_from_read_object = require './get_storage_from_read_object'
+
+	transform_stream = require './transform_stream'
+
+
+## Create Redis Stream and Client
 
 	prefix =
 		if 4 <= process.argv.length
@@ -21,35 +30,44 @@
 		else
 			''
 
-
-	read_stream = fs.createReadStream file_path
-
 	redis_client = redis.createClient()
 
+	redis_stream = through2.obj (chunk, encoding, done)->
+		if not R.is(Object)(chunk)
+			console.error('Chunk is not an Object.')
 
-	read_stream.on 'end', ->
-		redis_client.quit()
+		else
+			pair = get_storage_from_read_object(chunk)
 
-
-	emit = (name, value)->
-		new Promise (resolve, reject)->
-			if Buffer.isBuffer value
-				value = value.toString 'hex'
-
-			else if R.is Object, value
-				value = JSON.stringify value
-
-			if R.is Array, name
-				name = R.join '.', name
+			name = pair[0]
 
 			if '' != prefix
 				name = "#{prefix}.#{name}"
 
+			value = pair[1]
+
 			redis_client.set name, value, (err, res)->
 				if err
-					reject err
-				else
-					resolve()
+					console.error err
+
+				done()
 
 
-	process_stream read_stream, emit
+## Run!
+
+	file_path = process.argv[2]
+
+	#output_file_path = "#{file_path}.txt"
+	output_file_path = 'out.txt'
+
+	write_stream = fs.createWriteStream output_file_path
+
+	redis_stream.pipe write_stream
+
+	buffer_to_object_stream = transform_stream()
+
+	buffer_to_object_stream.pipe redis_stream
+
+	read_stream = fs.createReadStream file_path
+
+	read_stream.pipe buffer_to_object_stream
