@@ -53,20 +53,21 @@
 		output: [
 			buffer: new Buffer(0)
 			bytes: 24
-			data_bytes: 0
 			group_label: 'TES4'
 			group_number: 1
 			group_stop_byte: 24
-			id: 0
 			name: 'TES4'
 			record_name: 'TES4'
 			record_number: 1
 			record_stop_byte: 24
-			revision: 0
 			start_byte: 0
 			stop_byte: 24
-			unknown: 0
-			version: 0
+			value:
+				data_bytes: 0
+				id: 0
+				revision: 0
+				unknown: 0
+				version: 0
 		]
 
 	,
@@ -124,20 +125,21 @@
 				buffer_from.uint16 8
 			]
 			bytes: 24
-			data_bytes: 18
 			group_label: 'TES4'
 			group_number: 1
 			group_stop_byte: 42
-			id: 0
 			name: 'TES4'
 			record_name: 'TES4'
 			record_number: 1
 			record_stop_byte: 42
-			revision: 0
 			start_byte: 0
 			stop_byte: 24
-			unknown: 0
-			version: 0
+			value:
+				data_bytes: 18
+				id: 0
+				revision: 0
+				unknown: 0
+				version: 0
 		,
 			buffer: Buffer.concat [
 				buffer_from.ascii 'GRUP'
@@ -167,22 +169,23 @@
 		,
 			buffer: new Buffer(0)
 			bytes: 24
-			data_bytes: 0
 			group_label: 'GMST'
 			group_number: 2
 			group_stop_byte: 66
-			label: 'GMST'
-			label_type: 3
-			last_edit_date: '2009-01-09'
-			last_edit_day_of_month: 9
-			last_edit_month_since_2002_12: 72
 			name: 'GRUP'
 			record_name: 'TES4'
 			record_number: 1
 			record_stop_byte: 42
 			start_byte: 42
 			stop_byte: 66
-			version: 7
+			value:
+				data_bytes: 0
+				label: 'GMST'
+				label_type: 3
+				last_edit_date: '2009-01-09'
+				last_edit_day_of_month: 9
+				last_edit_month_since_2002_12: 72
+				version: 7
 		]
 	]
 

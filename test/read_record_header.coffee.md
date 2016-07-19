@@ -32,12 +32,13 @@
 
 		output:
 			bytes: 24
-			data_bytes: 0
-			id: 2
 			name: 'GMST'
-			revision: 3
-			unknown: 5
-			version: 4
+			value:
+				data_bytes: 0
+				id: 2
+				revision: 3
+				unknown: 5
+				version: 4
 	]
 
 	tape 'Read record header', (t)->

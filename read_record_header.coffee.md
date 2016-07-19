@@ -34,13 +34,14 @@ Plain version of `label` is `buffer.slice(0, 4).toString('ascii')`.
 
 	get_main_values = applySpec
 		bytes: always 24
-		data_bytes: buffer_to.uint32 4
-		#flags = buffer.slice 8, 12
-		id: buffer_to.uint32 12
 		name: compose(buffer_to.ascii, slice(0, 4))
-		revision: buffer_to.uint32 16
-		unknown: buffer_to.uint16 22
-		version: buffer_to.uint16 20
+		value:
+			data_bytes: buffer_to.uint32 4
+			#flags = buffer.slice 8, 12
+			id: buffer_to.uint32 12
+			revision: buffer_to.uint32 16
+			unknown: buffer_to.uint16 22
+			version: buffer_to.uint16 20
 
 
 ## Exports

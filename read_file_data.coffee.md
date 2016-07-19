@@ -6,7 +6,7 @@
 
 	R = require 'ramda'
 
-	{always, append, apply, assoc, both, call, cond, converge, dec, either, F, flip, identity, ifElse, inc, invoker, isNil, juxt, last, lensPath, lensProp, lte, mergeAll, objOf, over, pick, pipe, prop, propEq, props, sum, T, tap, view, where} = R
+	{always, append, apply, assoc, both, call, cond, converge, dec, either, F, flip, identity, ifElse, inc, invoker, isNil, juxt, last, lensPath, lensProp, lte, mergeAll, objOf, over, path, pick, pipe, prop, propEq, props, sum, T, tap, view, where} = R
 
 
 ## Relative imports
@@ -63,13 +63,19 @@ They are defined in the order that they will be found in a file (group > record 
 These provide common functionality used by each of the parsers.
 
 	calculate_stop_byte = pipe(
-		props(['data_bytes', 'stop_byte']),
+		# props(['data_bytes', 'stop_byte']),
+		juxt([
+			path(['value', 'data_bytes']),
+			prop('stop_byte')
+		])
 		sum
 	)
 
 	dec_group_number = over(lensProp('group_number'), dec)
 
 	drop_from_buffer = invoker(1, 'slice')
+
+	# ensure_array = R.unless(R.isArrayLike, R.of)
 
 	get_common_props = pick([
 		'buffer',
@@ -100,7 +106,8 @@ These provide common functionality used by each of the parsers.
 
 	set_group_label = converge(assoc, [
 		always('group_label'),
-		prop('label'),
+		# prop('label'),
+		path(['value', 'label']),
 		identity
 	])
 

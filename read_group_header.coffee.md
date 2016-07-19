@@ -40,7 +40,7 @@
 
 	R = require 'ramda'
 
-	{assoc, always, applySpec, converge, identity, ifElse, invoker, lte, pipe, prop, propSatisfies} = R
+	{assocPath, always, applySpec, converge, identity, ifElse, invoker, lte, path, pipe, prop, propSatisfies} = R
 
 
 ## Relative imports
@@ -60,26 +60,27 @@
 
 		last_edit.toISOString().slice(0, 10)
 
-	calculate_last_edit_date = converge(assoc('last_edit_date'), [
+	calculate_last_edit_date = converge(assocPath(['value', 'last_edit_date']), [
 		converge(get_date_since_2002_12, [
-			prop('last_edit_month_since_2002_12'),
-			prop('last_edit_day_of_month')
+			path(['value', 'last_edit_month_since_2002_12']),
+			path(['value', 'last_edit_day_of_month'])
 		]),
 		identity
 	])
 
 	get_main_values = applySpec
 		bytes: always 24
-		data_bytes: buffer_to.uint32 4
-		label: buffer_to.label 8
-		# label_top: buffer_to.label 0
-		label_type: buffer_to.uint32 12
-		last_edit_day_of_month: buffer_to.uint8 16
-		last_edit_month_since_2002_12: buffer_to.uint8 17
 		name: buffer_to.label 0
-		# unknown_1: buffer_to.uint16 18
-		# unknown_2: buffer_to.uint16 22
-		version: buffer_to.uint16 20
+		value:
+			data_bytes: buffer_to.uint32 4
+			label: buffer_to.label 8
+			# label_top: buffer_to.label 0
+			label_type: buffer_to.uint32 12
+			last_edit_day_of_month: buffer_to.uint8 16
+			last_edit_month_since_2002_12: buffer_to.uint8 17
+			# unknown_1: buffer_to.uint16 18
+			# unknown_2: buffer_to.uint16 22
+			version: buffer_to.uint16 20
 
 	has_byte_length = propSatisfies(lte(24), 'length')
 
