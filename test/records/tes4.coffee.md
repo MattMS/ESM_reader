@@ -9,40 +9,34 @@
 
 	buffer_from = require '../../buffer_from'
 
-	read_fields = require '../../read_fields'
-
 	tes4 = require '../../records/tes4'
 
 
 ## Run
 
 	tests = [
-		input:
-			buffer: Buffer.concat [
-				buffer_from.ascii 'HEDR'
-				buffer_from.uint16 12
-				buffer_from.float 0.94
-				buffer_from.uint32 7
-				buffer_from.uint32 8
-			]
-			last_byte: 12
+		input: Buffer.concat [
+			buffer_from.ascii 'HEDR'
+			buffer_from.uint16 12
+			buffer_from.float 0.94
+			buffer_from.uint32 7
+			buffer_from.uint32 8
+		]
 
-		output: [
-			length: 18
+		output:
+			bytes: 18
 			name: 'HEDR'
-			start_byte: 12
-			stop_byte: 30
 			value:
 				next_object_id: 8
 				record_count: 7
 				version: '0.94'
-		]
 	]
 
 	tape 'Read TES4 record fields', (t)->
-		for test_data in tests
-			t.plan 1
+		t.plan tests.length
 
-			actual_output = read_fields tes4, test_data.input
+		for test_data in tests
+			# actual_output = tes4 test_data.input
+			actual_output = false
 
 			t.deepEqual actual_output, test_data.output

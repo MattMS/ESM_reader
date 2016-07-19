@@ -9,8 +9,6 @@
 
 	buffer_from = require '../../buffer_from'
 
-	read_fields = require '../../read_fields'
-
 	gmst = require '../../records/gmst'
 
 
@@ -46,9 +44,10 @@
 	]
 
 	tape 'Read GMST record fields', (t)->
-		for test_data in tests
-			t.plan 1
+		t.plan tests.length
 
-			actual_output = read_fields gmst, test_data.input
+		for test_data in tests
+			# actual_output = gmst test_data.input
+			actual_output = false
 
 			t.deepEqual actual_output, test_data.output
