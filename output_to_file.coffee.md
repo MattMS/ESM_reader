@@ -1,12 +1,42 @@
 # Write Fallout 3 data to a file
 
-## Imports
+## Library imports
 
 	fs = require 'fs'
 
-	process_stream = require './process_stream'
-
 	R = require 'ramda'
+
+	{always, cond, converge, identity, invoker, join, nth, pipe, prop, T, unapply} = R
+
+	through2 = require 'through2'
+
+
+## Relative imports
+
+	get_storage_from_read_object = require './get_storage_from_read_object'
+
+	transform_stream = require './transform_stream'
+
+
+## Object to key-value text Stream
+
+	object_reader = through2.obj (chunk, encoding, done)->
+		if not R.is(Object)(chunk)
+			console.error('Chunk is not an Object.')
+
+		else
+			pair = get_storage_from_read_object(chunk)
+
+			line = converge(unapply(join('')), [
+				nth(0),
+				always('='),
+				nth(1),
+				always('\n')
+			])(pair)
+
+			this.push(line)
+
+		done()
 
 
 ## Run!
@@ -20,51 +50,12 @@
 
 	write_stream = fs.createWriteStream output_file_path
 
+	object_reader.pipe write_stream
+
+	transformer = transform_stream()
+
+	transformer.pipe object_reader
+
 	read_stream = fs.createReadStream file_path
 
-
-	get_lines = (path, value)->
-		if R.is String, value
-			if R.is Array, name
-				name = R.join '.', name
-
-			if Buffer.isBuffer value
-				value = value.toString 'hex'
-
-			"#{name}=#{value}\n"
-
-		#if R.is Object, value
-		else
-			#value = JSON.stringify value
-
-			lines = ''
-
-			for name, sub_value of value
-				next_path = R.concat path, name
-
-				lines += get_lines next_path, sub_value
-
-			lines
-
-
-	emit = (name, value)->
-		new Promise (resolve, reject)->
-			if Buffer.isBuffer value
-				value = value.toString 'hex'
-
-			else if R.is Object, value
-				value = JSON.stringify value
-
-			if R.is Array, name
-				name = R.join '.', name
-
-			line = "#{name}=#{value}\n"
-
-			write_stream.write line, (err, written, string)->
-				if err
-					reject err
-				else
-					resolve()
-
-
-	process_stream read_stream, emit
+	read_stream.pipe transformer
