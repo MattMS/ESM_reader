@@ -10,11 +10,19 @@ Get the key-value pair for the object that can be used to store it.
 	{cond, converge, identity, invoker, join, juxt, pipe, prop, T, unapply} = R
 
 
+## Relative imports
+
+	limit_group_label = require './limit_group_label'
+
+
 ## Exports
 
 	module.exports = juxt([
 		converge(unapply(join('.')), [
-			prop('group_label'),
+			pipe(
+				prop('group_label'),
+				limit_group_label
+			),
 			prop('group_number'),
 			prop('record_name'),
 			prop('record_number'),
