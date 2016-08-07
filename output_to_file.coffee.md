@@ -2,6 +2,8 @@
 
 ## Library imports
 
+	bunyan = require 'bunyan'
+
 	fs = require 'fs'
 
 	R = require 'ramda'
@@ -16,6 +18,15 @@
 	get_storage_from_read_object = require './get_storage_from_read_object'
 
 	transform_stream = require './transform_stream'
+
+
+## Logging
+
+	log = bunyan.createLogger
+		name: 'output_to_file'
+		# serializers:
+			# state: pick([])
+		stream: fs.createWriteStream('output_to_file.log.json')
 
 
 ## Object to key-value text Stream
@@ -34,6 +45,8 @@
 				always('\n')
 			])(pair)
 
+			log.info({line: line})
+
 			this.push(line)
 
 		done()
@@ -48,7 +61,7 @@
 
 	#out = fs.open output_file_path, 'w', (err, fd)->
 
-	write_stream = fs.createWriteStream output_file_path
+	write_stream = fs.createWriteStream(output_file_path)
 
 	object_reader.pipe write_stream
 
@@ -56,6 +69,6 @@
 
 	transformer.pipe object_reader
 
-	read_stream = fs.createReadStream file_path
+	read_stream = fs.createReadStream(file_path)
 
 	read_stream.pipe transformer
