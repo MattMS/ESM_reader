@@ -1,7 +1,7 @@
 {
   "author": "Matt McKellar-Spence",
   "bugs": {
-    "url": "https://github.com/MattMS/Fallout_3_data_reader/issues"
+    "url": "https://github.com/MattMS/ESM_reader/issues"
   },
   "dependencies": {
     "bunyan": "^1.8.1",
@@ -15,7 +15,7 @@
     "coffeetape": "^1.0.1",
     "tape": "^4.5.1"
   },
-  "homepage": "https://github.com/MattMS/Fallout_3_data_reader#readme",
+  "homepage": "https://github.com/MattMS/ESM_reader#readme",
   "keywords": [
     "binary",
     "ESM",
@@ -28,7 +28,7 @@
   "name": "fallout_3_data_reader",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MattMS/Fallout_3_data_reader.git"
+    "url": "git+https://github.com/MattMS/ESM_reader.git"
   },
   "scripts": {
     "test": "coffeetape ./test/**/*.coffee.md"
