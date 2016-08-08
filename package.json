@@ -6,8 +6,6 @@
   "dependencies": {
     "bunyan": "^1.8.1",
     "ramda": "^0.21.0",
-    "ramped": "^0.6.1",
-    "redis": "^2.6.2",
     "through2": "^2.0.1"
   },
   "description": "Read data from Fallout 3 ESM files.",
