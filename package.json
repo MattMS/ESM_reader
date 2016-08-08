@@ -31,6 +31,7 @@
     "url": "git+https://github.com/MattMS/ESM_reader.git"
   },
   "scripts": {
+    "prepublish": "coffee -c ./",
     "test": "coffeetape ./test/**/*.coffee.md"
   },
   "version": "0.1.0"
