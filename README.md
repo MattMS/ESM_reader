@@ -1,97 +1,50 @@
-# Read Fallout 3 data files
+# Read Fallout 3 ESM files
 
 **Please note:** This is a work in progress.
 It is only partially implemented and barely tested.
 Come back later.
 
-This project parses the data files (esm, esp) used by Fallout 3.
-There are scripts for creating a text file or populating a [Redis](http://redis.io/) database.
+This package parses the `*.esm` data files used by Fallout 3 and exposes the data as Objects via a Node.js Stream.
 
-The various scripts also aim to document the file structure in a readable way.
-
-
-## Getting started
-
-This has not been pushed to NPM yet because it does not work as a module.
-
-To parse data, you should clone this repo and then execute the following commands from within the folder.
-
-Install the dependencies for the scripts:
-
-```
-npm install
-```
+Another aim of this project is to provide documentation of the file format.
 
 
-## Parsing the files
+## Usage
 
-### To a file
+Add this as a dependency to your project:
 
-```
-coffee output_to_file.coffee.md BrokenSteel.esm
-```
-
-File output consists of lines of `name=value`.
+	npm install esm_reader --save
 
 
-### To Redis
-
-```
-coffee output_to_redis.coffee.md BrokenSteel.esm
-```
-
-
-### To something else
-
-You should read the contents of those `output_to_*` scripts to see how they work and then you could write your own.
-
-The only real requirement is an `emit` function that accepts an identifier and a value.
-The parser will call the `emit` function as it extracts values from the file.
-
-This may be changed later to push data to a stream instead.
-I am not sure what the best way to expose the data is.
-
-
-## Names
-
-Names are dot (`.`) separated to represent the hierarchy in the files.
-Names start with the 4 character ASCII values (group/record/field, described later) that are used in the esm/esp files.
-
-If the fields contain multiple values, then extra names have been added.
-These names do not follow the 4 character format of files to avoid future conflicts.
-
-
-## File structure
+## File structure and parsers
 
 Values are stored in [little endian](https://en.wikipedia.org/wiki/Endianness) format.
 This controls the Node Buffer methods to use.
 
-Files always start with a TES4 group.
-The start of this group is parsed in the `start_tes4_file()` function in [process_stream.coffee.md](./process_stream.coffee.md).
-
-The records in the TES4 group are parsed by [tes4.coffee.md](./tes4.coffee.md).
+Files always start with a TES4 record.
 
 The rest of the file is divided into groups, described next.
+
+[read_file_data.coffee.md](./read_file_data.coffee.md) switches to the appropriate parser based on the current state.
 
 
 ### Groups
 
-[grup.coffee.md](./grup.coffee.md) starts the parsing of each group.
-You should read this file to learn the byte structure.
+[read_group_header.coffee.md](./read_group_header.coffee.md) parses the start of each group.
 
-The data section of a group is made up of records, described next.
+The rest of the group is made up of records, described next.
 
 
 ### Records
 
-[grup_record.coffee.md](./grup_record.coffee.md) starts the parsing of each record.
+[read_record_header.coffee.md](./read_record_header.coffee.md) parses the start of each record.
 
-The data section of a record is made up of fields, described next.
+The rest of the record is made up of fields, described next.
 
 
 ### Fields
 
-[get_field.coffee.md](./get_field.coffee.md) parses field data from a Buffer.
+[read_field.coffee.md](./read_field.coffee.md) parses field data from a Buffer.
 
 A field contains a 4 byte label and then 2 bytes indicating the size of the field data.
 The remaining bytes store the value of the field.
