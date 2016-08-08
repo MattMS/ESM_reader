@@ -10,30 +10,23 @@
 	add_stop_byte = require '../add_stop_byte'
 
 
-## Test data
+## Run tests
 
-	tests = [
-		input: {}
-		output: {}
-	,
-		input:
+	tape 'Add empty stop byte', (t)->
+		t.plan 1
+		actual_output = add_stop_byte {}
+		t.deepEqual actual_output, {}
+
+	tape 'Add valid stop byte', (t)->
+		t.plan 1
+
+		actual_output = add_stop_byte
 			bytes: 24
 			start_byte: 12
-		output:
+
+		desired_output =
 			bytes: 24
 			start_byte: 12
 			stop_byte: 36
-	]
 
-
-## Run tests
-
-	tape 'Add stop byte', (t)->
-		t.plan tests.length
-
-		for test_data in tests
-			desired_output = test_data.output
-
-			actual_output = add_stop_byte test_data.input
-
-			t.deepEqual actual_output, desired_output
+		t.deepEqual actual_output, desired_output
