@@ -12,42 +12,23 @@
 	gmst = require '../../records/gmst'
 
 
-## Run
+## Run tests
 
-	tests = [
-		input:
-			buffer: Buffer.concat [
-				buffer_from.ascii 'EDID'
-				buffer_from.uint16 22
-				buffer_from.ascii 'sKarmicTitleNeutral30'
-				buffer_from.uint8 0
-				buffer_from.ascii 'DATA'
-				buffer_from.uint16 12
-				buffer_from.ascii 'True Mortal'
-				buffer_from.uint8 0
-			]
-			last_byte: 0
+	tape 'GMST EDID value', (t)->
+		t.plan 1
 
-		output: [
-			length: 28
-			name: 'EDID'
-			start_byte: 0
-			stop_byte: 28
-			value: 'sKarmicTitleNeutral30'
-		,
-			length: 18
-			name: 'DATA'
-			start_byte: 28
-			stop_byte: 46
-			value: 'True Mortal'
-		]
-	]
+		actual_output = gmst.EDID buffer_from.ascii 'sKarmicTitleNeutral30'
 
-	tape 'Read GMST record fields', (t)->
-		t.plan tests.length
+		desired_output = 'sKarmicTitleNeutral30'
 
-		for test_data in tests
-			# actual_output = gmst test_data.input
-			actual_output = false
+		t.deepEqual actual_output, desired_output
 
-			t.deepEqual actual_output, test_data.output
+
+	# tape 'GMST DATA value', (t)->
+	# 	t.plan 1
+	#
+	# 	actual_output = gmst.DATA buffer_from.ascii 'True Mortal'
+	#
+	# 	desired_output = 'True Mortal'
+	#
+	# 	t.deepEqual actual_output, desired_output
