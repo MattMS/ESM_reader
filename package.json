@@ -12,6 +12,7 @@
   "devDependencies": {
     "coffee-script": "^1.10.0",
     "coffeetape": "^1.0.1",
+    "rimraf": "^2.5.4",
     "tape": "^4.5.1"
   },
   "homepage": "https://github.com/MattMS/ESM_reader#readme",
@@ -30,6 +31,7 @@
     "url": "git+https://github.com/MattMS/ESM_reader.git"
   },
   "scripts": {
+    "clean": "rimraf **/*.js",
     "prepublish": "coffee -c ./",
     "test": "coffeetape ./test/**/*.coffee.md"
   },
