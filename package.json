@@ -25,7 +25,7 @@
   ],
   "license": "ISC",
   "main": "process_stream.coffee.md",
-  "name": "fallout_3_data_reader",
+  "name": "esm_reader",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MattMS/ESM_reader.git"
