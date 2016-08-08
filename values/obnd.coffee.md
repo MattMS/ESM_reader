@@ -2,7 +2,7 @@
 
 ## Library imports
 
-	ramped = require 'ramped'
+	{applySpec} = require 'ramda'
 
 
 ## Relative imports
@@ -12,7 +12,7 @@
 
 ## Exports
 
-	module.exports = ramped.make_object
+	module.exports = applySpec
 		x1: buffer_to.int16 0
 		y1: buffer_to.int16 2
 		z1: buffer_to.int16 4
