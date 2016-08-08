@@ -4,18 +4,20 @@
 
 	R = require 'ramda'
 
+	{add, compose, converge, curry, equals, identity, invoker, last, nth, pipe, replace, slice} = R
+
 
 ## Helper functions
 
-	buffer_to_string = R.invoker 1, 'toString'
+	buffer_to_string = invoker 1, 'toString'
 
-	last_is_0 = R.pipe R.last, R.equals 0
+	last_is_0 = pipe last, equals 0
 
-	strip_last_0 = R.when last_is_0, R.slice(0, -1)
+	strip_last_0 = R.when last_is_0, slice(0, -1)
 
-	buffer_to_ascii = R.pipe strip_last_0, buffer_to_string 'ascii'
+	buffer_to_ascii = pipe strip_last_0, buffer_to_string 'ascii'
 
-	swap_slashes = R.replace /\\/g, '/'
+	swap_slashes = replace /\\/g, '/'
 
 
 ## Exports
@@ -24,21 +26,22 @@
 		ascii: buffer_to_ascii
 
 		#char: R.compose String.fromCharCode, R.nth
-		char: R.curry (index, buffer)->
-			String.fromCharCode R.nth index, buffer
+		char: curry (index, buffer)->
+			String.fromCharCode nth index, buffer
 
-		file_path: R.pipe buffer_to_ascii, swap_slashes
+		file_path: pipe buffer_to_ascii, swap_slashes
 
-		float: R.invoker 1, 'readFloatLE'
+		float: invoker 1, 'readFloatLE'
 
-		int16: R.invoker 1, 'readInt16LE'
+		int16: invoker 1, 'readInt16LE'
 
-		label: (index)->
-			#R.compose buffer_to.ascii, R.apply(R.slice, R.juxt([R.identity, R.add(4)])(index))
-			R.compose buffer_to_ascii, R.slice(index, index + 4)
+		label: curry (index, buffer)->
+			compose(buffer_to_ascii, slice(index, index + 4))(buffer)
+		# label: pipe(converge(slice, [identity, add(4)]), buffer_to_ascii)
+		# label: compose(buffer_to_ascii, converge(slice, [identity, add(4)]))
 
-		uint8: R.invoker 1, 'readUInt8'
+		uint8: invoker 1, 'readUInt8'
 
-		uint16: R.invoker 1, 'readUInt16LE'
+		uint16: invoker 1, 'readUInt16LE'
 
-		uint32: R.invoker 1, 'readUInt32LE'
+		uint32: invoker 1, 'readUInt32LE'
