@@ -24,7 +24,7 @@
     "stream"
   ],
   "license": "ISC",
-  "main": "process_stream.coffee.md",
+  "main": "main.js",
   "name": "esm_reader",
   "repository": {
     "type": "git",
