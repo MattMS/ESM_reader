@@ -43,9 +43,7 @@ There may be multiple references to master files.
 
 ## Library imports
 
-	R = require 'ramda'
-
-	ramped = require 'ramped'
+	{applySpec, compose, invoker} = require 'ramda'
 
 
 ## Relative imports
@@ -55,7 +53,7 @@ There may be multiple references to master files.
 
 ## Helper functions
 
-	float_to_fixed = R.invoker 1, 'toFixed'
+	float_to_fixed = invoker(1, 'toFixed')
 
 
 ## Exports
@@ -63,13 +61,12 @@ There may be multiple references to master files.
 	module.exports =
 		CNAM: buffer_to.ascii
 
-		HEDR: ramped.make_object
-			version: R.compose float_to_fixed(2), buffer_to.float 0
-			#version: value.readFloatLE(0).toFixed 2
+		HEDR: applySpec
+			version: compose(float_to_fixed(2), buffer_to.float(0))
 
-			record_count: buffer_to.uint32 4
+			record_count: buffer_to.uint32(4)
 
-			next_object_id: buffer_to.uint32 8
+			next_object_id: buffer_to.uint32(8)
 
 		MAST: buffer_to.ascii
 
