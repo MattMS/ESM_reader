@@ -61,10 +61,8 @@
 
 Loop over the results returned and push each out to the Stream consumer.
 
-				transformer = this
-
-				results.forEach (item)->
-					transformer.push item
+				results.forEach (item)=>
+					@push item
 
 
 ### End

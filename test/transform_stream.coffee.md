@@ -14,10 +14,15 @@
 	transform_stream = require '../transform_stream'
 
 
-## Test data
+## Run test
 
-	tests = [
-		input: Buffer.concat [
+	tape 'Transform Stream', (t)->
+		t.plan 1
+
+
+### Input data
+
+		test_data_input = Buffer.concat [
 			buffer_from.ascii 'TES4'
 			buffer_from.uint32 18
 			buffer_from.uint32 0
@@ -43,7 +48,10 @@
 			buffer_from.uint16 8
 		]
 
-		output: [
+
+### Desired output
+
+		desired_output = [
 			buffer: Buffer.concat [
 				buffer_from.ascii 'HEDR'
 				buffer_from.uint16 12
@@ -124,39 +132,26 @@
 				last_edit_month_since_2002_12: 72
 				version: 7
 		]
-	]
 
 
-## Run tests
+### Collect and test transformed data
 
-	tape 'Read Stream', (t)->
-		t.plan tests.length
+		actual_output = []
 
-		actual_output = {}
-		desired_output = {}
+		transformer = transform_stream()
 
-		for test_data in tests
-			transformer = transform_stream()
+		transformer.on 'data', (chunk)->
+			actual_output.push chunk
 
-			desired_output[transformer] = test_data.output
-
-
-### Collect transformed data
-
-			actual_output[transformer] = []
-
-			transformer.on 'data', (chunk)->
-				actual_output[this].push chunk
-
-			transformer.on 'end', (a)->
-				t.deepEqual actual_output[this], desired_output[this]
+		transformer.on 'end', (a)->
+			t.deepEqual actual_output, desired_output
 
 
 ### Pipe in test input
 
-			in_stream = new stream.Readable()
+		in_stream = new stream.Readable()
 
-			in_stream.pipe transformer
+		in_stream.pipe transformer
 
-			in_stream.push test_data.input
-			in_stream.push null
+		in_stream.push test_data_input
+		in_stream.push null
