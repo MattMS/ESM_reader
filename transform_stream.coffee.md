@@ -11,7 +11,7 @@
 
 ## Relative imports
 
-	read_file_data = require './read_file_data'
+	parse_file_data = require './parser/main'
 
 
 ## Logging
@@ -51,7 +51,7 @@
 			else
 				state.buffer = Buffer.concat([state.buffer, chunk])
 
-				results = read_file_data(state)
+				results = parse_file_data(state)
 
 				if not isEmpty(results)
 					state = last(results)

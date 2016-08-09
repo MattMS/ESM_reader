@@ -1,4 +1,4 @@
-# Read file data
+# Parse file data
 
 ## Library imports
 
@@ -12,11 +12,11 @@
 These functions are the different types of Buffer processors that can be called.
 The appropriate one is chosen by the `single_pass` switching function.
 
-	parse_field = require './parser/field'
+	parse_field = require './field'
 
-	start_new_group = require './parser/start_new_group'
+	start_new_group = require './start_new_group'
 
-	start_new_record = require './parser/start_new_record'
+	start_new_record = require './start_new_record'
 
 
 ## Pick parser

@@ -7,9 +7,9 @@
 
 ## Relative imports
 
-	buffer_from = require '../buffer_from'
+	buffer_from = require '../../buffer_from'
 
-	read_file_data = require '../read_file_data'
+	parse_file_data = require '../../parser/main'
 
 
 ## Test data
@@ -198,6 +198,6 @@
 		for test_data in tests
 			desired_output = test_data.output
 
-			actual_output = read_file_data test_data.input
+			actual_output = parse_file_data test_data.input
 
 			t.deepEqual actual_output, desired_output
