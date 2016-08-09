@@ -25,7 +25,7 @@ Files always start with a TES4 record.
 
 The rest of the file is divided into groups, described next.
 
-[read_file_data.coffee.md](./read_file_data.coffee.md) switches to the appropriate parser based on the current state.
+[parser/main.coffee.md](./parser/main.coffee.md) switches to the appropriate parser based on the current state.
 
 
 ### Groups
