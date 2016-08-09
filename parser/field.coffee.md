@@ -4,7 +4,7 @@
 
 	R = require 'ramda'
 
-	{always, converge, flip, identity, isNil, juxt, lensPath, lensProp, mergeAll, objOf, over, pipe, prop, view} = R
+	{always, converge, flip, identity, ifElse, inc, isNil, juxt, lensPath, lensProp, mergeAll, objOf, over, pipe, prepend, prop, view} = R
 
 
 ## Relative imports
@@ -13,24 +13,13 @@
 
 	get_common_props = require './get_common_props'
 
+	handlers = require '../records/all'
+
+	inc_field_count = require './inc_field_count'
+
 	read_field = require '../read_field'
 
 	trim_buffer_bytes = require './trim_buffer_bytes'
-
-
-## Record handler imports
-
-	handlers =
-		ASPC: require '../records/aspc'
-		DOOR: require '../records/door'
-		FACT: require '../records/fact'
-		GLOB: require '../records/glob'
-		GMST: require '../records/gmst'
-		MGEF: require '../records/mgef'
-		SCPT: require '../records/scpt'
-		SOUN: require '../records/soun'
-		TES4: require '../records/tes4'
-		TXST: require '../records/txst'
 
 
 ## Get value handler
@@ -70,5 +59,6 @@
 		mergeAll,
 		update_field_value,
 		add_stop_byte,
+		inc_field_count,
 		trim_buffer_bytes
 	)

@@ -72,6 +72,7 @@
 				get_common_props,
 				pipe(prop('buffer'), read_group_header),
 				pipe(prop('stop_byte'), objOf('start_byte')),
+				always({field_counts: {}}),
 				always({record_number: 1})
 			]),
 			mergeAll,

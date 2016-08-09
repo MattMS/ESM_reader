@@ -9,6 +9,7 @@
 
 	module.exports = pick([
 		'buffer',
+		'field_counts',
 		'group_label',
 		'group_number',
 		'group_stop_byte',

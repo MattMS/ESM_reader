@@ -50,6 +50,7 @@ Make sure that the object passed in has the properties required for parsing.
 
 	input_passes_spec = where
 		buffer: R.is(Buffer)
+		# field_counts: R.is(Object)
 		group_label: R.is(String)
 		group_number: R.is(Number)
 		group_stop_byte: R.is(Number)

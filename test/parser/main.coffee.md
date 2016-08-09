@@ -12,14 +12,22 @@
 	parse_file_data = require '../../parser/main'
 
 
-## Test data
+## Run tests
 
-	tests = [
-		input: {}
-		output: []
+	tape 'Parse empty object', (t)->
+		t.plan 1
 
-	,
-		input:
+		actual_output = parse_file_data {}
+
+		desired_output = []
+
+		t.deepEqual actual_output, desired_output
+
+
+	tape 'Parse empty Buffer', (t)->
+		t.plan 1
+
+		actual_output = parse_file_data
 			buffer: new Buffer(0)
 			group_label: 'TES4'
 			group_number: 0
@@ -29,10 +37,15 @@
 			record_stop_byte: 0
 			stop_byte: 0
 
-		output: []
+		desired_output = []
 
-	,
-		input:
+		t.deepEqual actual_output, desired_output
+
+
+	tape 'Parse TES4 record with no fields', (t)->
+		t.plan 1
+
+		actual_output = parse_file_data
 			buffer: Buffer.concat [
 				buffer_from.ascii 'TES4'
 				buffer_from.uint32 0
@@ -50,9 +63,10 @@
 			record_stop_byte: 0
 			stop_byte: 0
 
-		output: [
+		desired_output = [
 			buffer: new Buffer(0)
 			bytes: 24
+			field_counts: {}
 			group_label: 'TES4'
 			group_number: 1
 			group_stop_byte: 24
@@ -70,8 +84,13 @@
 				version: 0
 		]
 
-	,
-		input:
+		t.deepEqual actual_output, desired_output
+
+
+	tape 'Parse TES4 record and empty GRUP', (t)->
+		t.plan 1
+
+		actual_output = parse_file_data
 			buffer: Buffer.concat [
 				buffer_from.ascii 'TES4'
 				buffer_from.uint32 18
@@ -106,7 +125,7 @@
 			record_stop_byte: 0
 			stop_byte: 0
 
-		output: [
+		desired_output = [
 			buffer: Buffer.concat [
 				buffer_from.ascii 'HEDR'
 				buffer_from.uint16 12
@@ -125,6 +144,7 @@
 				buffer_from.uint16 8
 			]
 			bytes: 24
+			field_counts: {}
 			group_label: 'TES4'
 			group_number: 1
 			group_stop_byte: 42
@@ -153,6 +173,8 @@
 				buffer_from.uint16 8
 			]
 			bytes: 18
+			field_counts:
+				HEDR: 1
 			group_label: 'TES4'
 			group_number: 1
 			group_stop_byte: 42
@@ -169,6 +191,7 @@
 		,
 			buffer: new Buffer(0)
 			bytes: 24
+			field_counts: {}
 			group_label: 'GMST'
 			group_number: 2
 			group_stop_byte: 66
@@ -187,17 +210,5 @@
 				last_edit_month_since_2002_12: 72
 				version: 7
 		]
-	]
 
-
-## Run
-
-	tape 'Read file data', (t)->
-		t.plan tests.length
-
-		for test_data in tests
-			desired_output = test_data.output
-
-			actual_output = parse_file_data test_data.input
-
-			t.deepEqual actual_output, desired_output
+		t.deepEqual actual_output, desired_output

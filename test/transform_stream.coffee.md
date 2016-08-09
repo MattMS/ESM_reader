@@ -70,6 +70,7 @@
 				buffer_from.uint16 8
 			]
 			bytes: 24
+			field_counts: {}
 			group_label: 'TES4'
 			group_number: 1
 			group_stop_byte: 42
@@ -98,6 +99,8 @@
 				buffer_from.uint16 8
 			]
 			bytes: 18
+			field_counts:
+				HEDR: 1
 			group_label: 'TES4'
 			group_number: 1
 			group_stop_byte: 42
@@ -114,6 +117,7 @@
 		,
 			buffer: new Buffer(0)
 			bytes: 24
+			field_counts: {}
 			group_label: 'GMST'
 			group_number: 2
 			group_stop_byte: 66
