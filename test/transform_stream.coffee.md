@@ -80,6 +80,7 @@
 			record_stop_byte: 42
 			start_byte: 0
 			stop_byte: 24
+			type: 'record_header'
 			value:
 				data_bytes: 18
 				id: 0
@@ -111,6 +112,7 @@
 			record_stop_byte: 42
 			start_byte: 24
 			stop_byte: 42
+			type: 'field'
 			value:
 				next_object_id: 8
 				record_count: 7
@@ -128,6 +130,7 @@
 			record_stop_byte: 42
 			start_byte: 42
 			stop_byte: 66
+			type: 'group_header'
 			value:
 				data_bytes: 0
 				label: 'GMST'

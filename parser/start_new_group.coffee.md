@@ -2,12 +2,16 @@
 
 ## Library imports
 
-	{assoc, always, converge, dec, identity, ifElse, inc, juxt, lensProp, mergeAll, objOf, over, path, pipe, prop, propEq} = require 'ramda'
+	R = require 'ramda'
+
+	{assoc, always, converge, dec, identity, ifElse, inc, juxt, lensProp, mergeAll, objOf, over, path, pipe, prop, propEq} = R
 
 
 ## Relative imports
 
 	add_stop_byte = require '../add_stop_byte'
+
+	add_type = require './add_type'
 
 	calculate_stop_byte = require './calculate_stop_byte'
 
@@ -90,6 +94,6 @@
 
 	module.exports = ifElse(
 		propEq('group_number', 0),
-		parse_TES4_record,
-		start_new_group
+		pipe(parse_TES4_record, R.unless(last_record_is_empty, add_type('record_header'))),
+		pipe(start_new_group, R.unless(last_record_is_empty, add_type('group_header')))
 	)

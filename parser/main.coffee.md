@@ -12,11 +12,18 @@
 These functions are the different types of Buffer processors that can be called.
 The appropriate one is chosen by the `single_pass` switching function.
 
+	add_type = require './add_type'
+
 	parse_field = require './field'
 
 	start_new_group = require './start_new_group'
 
 	start_new_record = require './start_new_record'
+
+
+## Last record
+
+	last_record_is_empty = propEq('bytes', 0)
 
 
 ## Pick parser
@@ -27,10 +34,12 @@ Decide which function should be called to process the Buffer.
 
 	passed_record_stop = converge(lte, [prop('record_stop_byte'), prop('stop_byte')])
 
+NOTE: A `type` property is added in the [start_new_group](./start_new_group.coffee.md) module.
+
 	pick_parser = cond([
 		[passed_group_stop, start_new_group]
-		[passed_record_stop, start_new_record]
-		[T, parse_field]
+		[passed_record_stop, pipe(start_new_record, R.unless(last_record_is_empty, add_type('record_header')))]
+		[T, pipe(parse_field, R.unless(last_record_is_empty, add_type('field')))]
 	])
 
 
@@ -39,7 +48,7 @@ Decide which function should be called to process the Buffer.
 	main_loop = unfold(
 		pipe(
 			pick_parser,
-			ifElse(propEq('bytes', 0), F, juxt([identity, identity]))
+			ifElse(last_record_is_empty, F, juxt([identity, identity]))
 		)
 	)
 
