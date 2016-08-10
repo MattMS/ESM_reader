@@ -59,6 +59,7 @@
 		bytes: 24
 		field_counts: {}
 		group_label: 'TES4'
+		group_name: 'TES4'
 		group_number: 1
 		group_stop_byte: 42
 		name: 'TES4'
@@ -91,6 +92,7 @@
 			HEDR: 1
 		field_number: 1
 		group_label: 'TES4'
+		group_name: 'TES4'
 		group_number: 1
 		group_stop_byte: 42
 		name: 'HEDR'
@@ -109,6 +111,7 @@
 		bytes: 24
 		field_counts: {}
 		group_label: 'GMST'
+		group_name: 'GRUP'
 		group_number: 2
 		group_stop_byte: 66
 		name: 'GRUP'

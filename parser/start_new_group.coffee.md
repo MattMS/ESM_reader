@@ -40,6 +40,12 @@
 		identity
 	])
 
+	set_group_name = converge(assoc, [
+		always('group_name'),
+		prop('name'),
+		identity
+	])
+
 	set_group_stop_byte = converge(assoc, [
 		always('group_stop_byte'),
 		calculate_stop_byte,
@@ -85,6 +91,7 @@
 		ifElse(last_record_is_empty, dec_group_number, pipe(
 			trim_buffer_bytes,
 			set_group_label,
+			set_group_name,
 			set_group_stop_byte
 		))
 	)

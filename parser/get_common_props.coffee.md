@@ -11,6 +11,7 @@
 		'buffer',
 		'field_counts',
 		'group_label',
+		'group_name',
 		'group_number',
 		'group_stop_byte',
 		'record_name',

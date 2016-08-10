@@ -11,6 +11,8 @@
 
 	common_file = require '../common_file'
 
+	get_initial_state = require '../../parser/get_initial_state'
+
 	parse_file_data = require '../../parser/main'
 
 
@@ -93,15 +95,11 @@
 	tape 'Parse full file', (t)->
 		t.plan 1
 
-		actual_output = parse_file_data
-			buffer: common_file.input
-			group_label: 'TES4'
-			group_number: 0
-			group_stop_byte: 0
-			# record_name: 'TES4'
-			record_number: 0
-			record_stop_byte: 0
-			stop_byte: 0
+		initial_state = get_initial_state()
+
+		initial_state.buffer = common_file.input
+
+		actual_output = parse_file_data initial_state
 
 		desired_output = common_file.output
 
