@@ -2,19 +2,19 @@
 
 ## File structure
 
-- 4 ASCII bytes: `GRUP`
+| Bytes | Type             | Description                         |
+| ----- | ---------------- | ----------------------------------- |
+|     4 | ASCII            | Always `GRUP`                       |
+|     4 | unsigned integer | Size of group                       |
+|     4 | ASCII            | Label                               |
+|     4 | unsigned integer | Group label type                    |
+|     1 | unsigned integer | Last edit day of month              |
+|     1 | unsigned integer | Last edit month since December 2002 |
+|     2 | -                | Unknown                             |
+|     2 | unsigned integer | Version                             |
+|     2 | -                | Unknown                             |
 
-- 4 byte unsigned integer: size of group (including the 24 byte header).
-
-- 4 ASCII bytes: label
-
-- 4 byte unsigned integer
-
-- 2 byte unsigned integer: last edit day of month
-
-- 2 byte unsigned integer: last edit month since December 2002
-
-- 6 bytes
+- Size of group includes the 24 byte header.
 
 
 ### Label type
