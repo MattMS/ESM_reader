@@ -42,7 +42,7 @@ This table shows how the type of the 4 label bytes varies based on the value of 
 
 	R = require 'ramda'
 
-	{assocPath, always, applySpec, converge, identity, ifElse, invoker, lte, path, pipe, prop, propSatisfies} = R
+	{assocPath, always, applySpec, converge, equals, identity, ifElse, invoker, lte, path, pipe, prop, propSatisfies} = R
 
 
 ## Relative imports
@@ -70,12 +70,16 @@ This table shows how the type of the 4 label bytes varies based on the value of 
 		identity
 	])
 
+	label_type_is_0 = pipe(buffer_to.uint32(12), equals(0))
+
+	get_label = ifElse(label_type_is_0, buffer_to.label(8), buffer_to.uint32(8))
+
 	get_main_values = applySpec
 		bytes: always 24
 		name: buffer_to.label 0
 		value:
 			data_bytes: buffer_to.uint32 4
-			label: buffer_to.label 8
+			label: get_label
 			# label_top: buffer_to.label 0
 			label_type: buffer_to.uint32 12
 			last_edit_day_of_month: buffer_to.uint8 16
