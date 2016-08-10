@@ -11,6 +11,8 @@
 
 ## Relative imports
 
+	get_initial_state = require './parser/get_initial_state'
+
 	parse_file_data = require './parser/main'
 
 
@@ -32,15 +34,7 @@
 ## Exports
 
 	module.exports = ->
-		state =
-			buffer: new Buffer 0
-			group_label: 'TES4'
-			group_number: 0
-			group_stop_byte: 0
-			# record_name: 'TES4'
-			record_number: 0
-			record_stop_byte: 0
-			stop_byte: 0
+		state = get_initial_state()
 
 > Note that `through2.obj(fn)` is a convenience wrapper around `through2({objectMode: true}, fn)`.
 
