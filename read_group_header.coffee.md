@@ -14,8 +14,6 @@
 |     2 | unsigned integer | Version                             |
 |     2 | -                | Unknown                             |
 
-- Size of group includes the 24 byte header.
-
 
 ### Label type
 
