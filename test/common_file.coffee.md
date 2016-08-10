@@ -27,7 +27,7 @@
 		buffer_from.ascii 'GRUP'
 		buffer_from.uint32 0
 		buffer_from.ascii 'GMST'
-		buffer_from.uint32 3
+		buffer_from.uint32 0
 		buffer_from.uint8 9
 		buffer_from.uint8 72
 		buffer_from.uint16 6
@@ -49,7 +49,7 @@
 			buffer_from.ascii 'GRUP'
 			buffer_from.uint32 0
 			buffer_from.ascii 'GMST'
-			buffer_from.uint32 3
+			buffer_from.uint32 0
 			buffer_from.uint8 9
 			buffer_from.uint8 72
 			buffer_from.uint16 6
@@ -80,7 +80,7 @@
 			buffer_from.ascii 'GRUP'
 			buffer_from.uint32 0
 			buffer_from.ascii 'GMST'
-			buffer_from.uint32 3
+			buffer_from.uint32 0
 			buffer_from.uint8 9
 			buffer_from.uint8 72
 			buffer_from.uint16 6
@@ -124,7 +124,7 @@
 		value:
 			data_bytes: 0
 			label: 'GMST'
-			label_type: 3
+			label_type: 0
 			last_edit_date: '2009-01-09'
 			last_edit_day_of_month: 9
 			last_edit_month_since_2002_12: 72
