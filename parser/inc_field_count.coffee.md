@@ -2,9 +2,12 @@
 
 ## Library imports
 
-	R = require 'ramda'
+	{always, converge, identity, ifElse, inc, isNil, lensPath, over, pipe} = require 'ramda'
 
-	{always, converge, identity, ifElse, inc, isNil, lensPath, over, pipe, prepend, prop, tap} = R
+
+## Relative imports
+
+	get_field_count_path = require './get_field_count_path'
 
 
 ## Increment the count
@@ -12,11 +15,11 @@
 	inc_from_1 = ifElse(isNil, always(1), inc)
 
 
-## Make the lens
+## Get lens
 
-	make_field_count_lens = pipe(prop('name'), R.of, prepend('field_counts'), lensPath)
+	get_field_count_lens = pipe(get_field_count_path, lensPath)
 
 
 ## Exports
 
-	module.exports = converge(over, [make_field_count_lens, always(inc_from_1), identity])
+	module.exports = converge(over, [get_field_count_lens, always(inc_from_1), identity])
