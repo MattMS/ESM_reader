@@ -42,6 +42,7 @@
 			bytes: 18
 			field_counts:
 				HEDR: 1
+			field_number: 1
 			group_label: 'TES4'
 			group_number: 1
 			group_stop_byte: 42

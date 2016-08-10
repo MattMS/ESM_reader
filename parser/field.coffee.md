@@ -19,10 +19,14 @@
 
 	read_field = require '../read_field'
 
+	set_field_number = require './set_field_number'
+
 	trim_buffer_bytes = require './trim_buffer_bytes'
 
 
 ## Get value handler
+
+Give the state object for the current field, return the function to convert the raw field data to a useful form.
 
 	get_value_handler = pipe(
 		pipe(
@@ -60,5 +64,6 @@
 		update_field_value,
 		add_stop_byte,
 		inc_field_count,
+		set_field_number,
 		trim_buffer_bytes
 	)
