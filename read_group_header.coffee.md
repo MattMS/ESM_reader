@@ -6,8 +6,8 @@
 | ----- | ---------------- | ----------------------------------- |
 |     4 | ASCII            | Always `GRUP`                       |
 |     4 | unsigned integer | Size of group                       |
-|     4 | ASCII            | Label                               |
-|     4 | unsigned integer | Group label type                    |
+|     4 | varies           | Label                               |
+|     4 | unsigned integer | Label type                          |
 |     1 | unsigned integer | Last edit day of month              |
 |     1 | unsigned integer | Last edit month since December 2002 |
 |     2 | -                | Unknown                             |
@@ -19,19 +19,21 @@
 
 ### Label type
 
-| Value | Bytes | Type               | Description                          |
-| ----- | ----- | ------------------ | ------------------------------------ |
-|     0 |     4 | ASCII              | Record type                          |
-|     1 |     4 | unsigned integer   | World (WRLD) children                |
-|     2 |     4 | integer            | Interior cell block number           |
-|     3 |     4 | integer            | Interior cell sub-block number       |
-|     4 |     4 | 2 x 2 byte integer | Exterior cell block grid Y, X        |
-|     5 |     4 | 2 x 2 byte integer | Exterior cell sub-block grid Y, X    |
-|     6 |     4 | unsigned integer   | Cell (CELL) children                 |
-|     7 |     4 | unsigned integer   | Topic (DIAL) children                |
-|     8 |     4 | unsigned integer   | Persistent cell (CELL) childen       |
-|     9 |     4 | unsigned integer   | Temporary cell (CELL) children       |
-|    10 |     4 | unsigned integer   | Visible distant cell (CELL) children |
+This table shows how the type of the 4 label bytes varies based on the value of the following 4 bytes.
+
+| Value | Type               | Description                          |
+| ----- | ------------------ | ------------------------------------ |
+|     0 | ASCII              | Record type                          |
+|     1 | unsigned integer   | World (WRLD) children                |
+|     2 | integer            | Interior cell block number           |
+|     3 | integer            | Interior cell sub-block number       |
+|     4 | 2 x 2 byte integer | Exterior cell block grid Y, X        |
+|     5 | 2 x 2 byte integer | Exterior cell sub-block grid Y, X    |
+|     6 | unsigned integer   | Cell (CELL) children                 |
+|     7 | unsigned integer   | Topic (DIAL) children                |
+|     8 | unsigned integer   | Persistent cell (CELL) childen       |
+|     9 | unsigned integer   | Temporary cell (CELL) children       |
+|    10 | unsigned integer   | Visible distant cell (CELL) children |
 
 - Note the reverse order of the exterior cell integers.
 
