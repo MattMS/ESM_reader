@@ -23,7 +23,7 @@ The appropriate one is chosen by the `single_pass` switching function.
 
 ## Last record
 
-	last_record_is_empty = propEq('bytes', 0)
+	no_data_was_parsed = propEq('bytes', 0)
 
 
 ## Pick parser
@@ -38,8 +38,8 @@ NOTE: A `type` property is added in the [start_new_group](./start_new_group.coff
 
 	pick_parser = cond([
 		[passed_group_stop, start_new_group]
-		[passed_record_stop, pipe(start_new_record, R.unless(last_record_is_empty, add_type('record_header')))]
-		[T, pipe(parse_field, R.unless(last_record_is_empty, add_type('field')))]
+		[passed_record_stop, pipe(start_new_record, R.unless(no_data_was_parsed, add_type('record_header')))]
+		[T, pipe(parse_field, R.unless(no_data_was_parsed, add_type('field')))]
 	])
 
 
@@ -48,7 +48,7 @@ NOTE: A `type` property is added in the [start_new_group](./start_new_group.coff
 	main_loop = unfold(
 		pipe(
 			pick_parser,
-			ifElse(last_record_is_empty, F, juxt([identity, identity]))
+			ifElse(no_data_was_parsed, F, juxt([identity, identity]))
 		)
 	)
 
