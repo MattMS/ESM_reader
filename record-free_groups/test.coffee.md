@@ -10,11 +10,11 @@ Test the groups that do not have any records, only fields.
 
 ## Relative imports
 
-	buffer_from = require '../../buffer_from'
+	buffer_from = require '../buffer_from'
 
-	get_initial_state = require '../../parser/get_initial_state'
+	get_initial_state = require '../parser/get_initial_state'
 
-	parse_file_data = require '../../parser/main'
+	parse_file_data = require '../parser/main'
 
 
 ## Run tests
