@@ -30,7 +30,7 @@ The rest of the file is divided into groups, described next.
 
 ### Groups
 
-[read_group_header.coffee.md](./read_group_header.coffee.md) parses the start of each group.
+[/read_group_header/](./read_group_header/main.coffee.md) parses the start of each group.
 
 The rest of the group is made up of records, described next.
 

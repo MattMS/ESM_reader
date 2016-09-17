@@ -45,7 +45,7 @@ This table shows how the type of the 4 label bytes varies based on the value of 
 
 ## Relative imports
 
-	buffer_to = require './buffer_to'
+	buffer_to = require '../buffer_to'
 
 
 ## Helper functions

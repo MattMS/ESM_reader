@@ -17,7 +17,7 @@
 
 	get_common_props = require './get_common_props'
 
-	read_group_header = require '../read_group_header'
+	read_group_header = require '../read_group_header/main'
 
 	start_new_record = require './start_new_record'
 

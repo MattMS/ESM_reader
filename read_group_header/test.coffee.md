@@ -9,7 +9,7 @@
 
 	buffer_from = require '../buffer_from'
 
-	read_group_header = require '../read_group_header'
+	read_group_header = require './main'
 
 
 ## Test data
