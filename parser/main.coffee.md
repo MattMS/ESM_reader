@@ -1,10 +1,10 @@
-# Parse file data
+# Parser
 
 ## Library imports
 
 	R = require 'ramda'
 
-	{always, both, cond, converge, F, identity, ifElse, juxt, lte, pipe, prop, propEq, T, unfold, where} = R
+	{always, both, cond, converge, F, identity, ifElse, juxt, lensProp, lte, over, pick, pipe, prop, propEq, T, unfold, where} = R
 
 
 ## Relative imports
@@ -16,9 +16,36 @@ The appropriate one is chosen by the `single_pass` switching function.
 
 	parse_field = require './field'
 
+	pipe_logs = require '../pipe_logs/main'
+
+	start_log = require '../start_log/main'
+
 	start_new_group = require './start_new_group'
 
 	start_new_record = require './start_new_record'
+
+
+## Logging
+
+	pick_parser_log = start_log identity
+	# pick_parser_log = start_log over(
+	# 	lensProp('value'),
+	# 	pick([
+	# 		'group_name'
+	# 		'group_number'
+	# 		'stop_byte'
+	# 	])
+	# )
+
+	log = start_log identity
+
+	pipe_logs [
+		# add_type.log
+		# parse_field.log
+		pick_parser_log
+		# start_new_group.log
+		# start_new_record.log
+	], log
 
 
 ## Last record
@@ -48,6 +75,7 @@ NOTE: A `type` property is added in the [start_new_group](./start_new_group.coff
 	main_loop = unfold(
 		pipe(
 			pick_parser,
+			pick_parser_log.trace('Parser unfold'),
 			ifElse(no_data_was_parsed, F, juxt([identity, identity]))
 		)
 	)
@@ -74,3 +102,5 @@ Make sure that the object passed in has the properties required for parsing.
 ## Exports
 
 	module.exports = ifElse(verify_input, main_loop, always([]))
+
+	module.exports.log = log

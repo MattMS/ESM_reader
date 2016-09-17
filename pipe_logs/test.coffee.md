@@ -6,6 +6,8 @@
 
 	concat_stream = require 'concat-stream'
 
+	{identity} = require 'ramda'
+
 	{pipe_to_stream, stop} = require('flogging.stream_base')
 
 	tape = require 'tape'
@@ -37,11 +39,11 @@
 			value: 4
 		]
 
-		log_child_1 = start_log()
+		log_child_1 = start_log identity
 
-		log_child_2 = start_log()
+		log_child_2 = start_log identity
 
-		log_parent = start_log()
+		log_parent = start_log identity
 
 		pipe_logs [
 			log_child_1

@@ -37,12 +37,12 @@
 		log_stream = concat_stream (log_messages)->
 			# console.log log_messages
 
-		flogging_base.pipe_to_stream(log.base, log_stream)
+		flogging_base.pipe_to_stream log.base, log_stream
 
 		transformer = transform_stream()
 
 		transformer.on 'end', ->
-			flogging_base.stop(log.base)
+			flogging_base.stop log.base
 
 
 ### Collect and compare transformed output

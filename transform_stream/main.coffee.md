@@ -2,7 +2,7 @@
 
 ## Library imports
 
-	{isEmpty, last, pick} = require 'ramda'
+	{identity, isEmpty, last, pick} = require 'ramda'
 
 	through2 = require 'through2'
 
@@ -13,12 +13,18 @@
 
 	parse_file_data = require '../parser/main'
 
+	pipe_logs = require '../pipe_logs/main'
+
 	start_log = require '../start_log/main'
 
 
 ## Logging
 
-	log = start_log()
+	log = start_log identity
+
+	pipe_logs [
+		parse_file_data.log
+	], log
 
 
 ## Exports
