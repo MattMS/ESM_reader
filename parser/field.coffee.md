@@ -9,7 +9,7 @@
 
 ## Relative imports
 
-	add_stop_byte = require '../add_stop_byte'
+	add_stop_byte = require '../add_stop_byte/main'
 
 	get_common_props = require './get_common_props'
 

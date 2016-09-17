@@ -7,7 +7,7 @@
 
 ## Relative imports
 
-	add_stop_byte = require '../add_stop_byte'
+	add_stop_byte = require './main'
 
 
 ## Run tests

@@ -9,7 +9,7 @@
 
 ## Relative imports
 
-	add_stop_byte = require '../add_stop_byte'
+	add_stop_byte = require '../add_stop_byte/main'
 
 	add_type = require './add_type'
 
