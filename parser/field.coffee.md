@@ -17,7 +17,7 @@
 
 	inc_field_count = require './inc_field_count'
 
-	read_field = require '../read_field'
+	read_field = require '../read_field/main'
 
 	set_field_number = require './set_field_number'
 

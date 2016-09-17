@@ -9,7 +9,7 @@
 
 	buffer_from = require '../buffer_from'
 
-	read_field = require '../read_field'
+	read_field = require './main'
 
 
 ## Run tests
