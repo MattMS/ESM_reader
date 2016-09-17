@@ -12,7 +12,7 @@
     "coffee-script": "^1.10.0",
     "coffeetape": "^1.0.1",
     "concat-stream": "^1.5.2",
-    "flogging": "^0.2.0",
+    "flogging": "^0.3.0",
     "rimraf": "^2.5.4",
     "tape": "^4.5.1"
   },
