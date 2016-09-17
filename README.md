@@ -37,7 +37,7 @@ The rest of the group is made up of records, described next.
 
 ### Records
 
-[read_record_header.coffee.md](./read_record_header.coffee.md) parses the start of each record.
+[/read_record_header/](./read_record_header/main.coffee.md) parses the start of each record.
 
 The rest of the record is made up of fields, described next.
 

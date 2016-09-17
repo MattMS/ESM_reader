@@ -15,7 +15,7 @@
 
 	get_common_props = require './get_common_props'
 
-	read_record_header = require '../read_record_header'
+	read_record_header = require '../read_record_header/main'
 
 	trim_buffer_bytes = require './trim_buffer_bytes'
 

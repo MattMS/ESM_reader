@@ -9,7 +9,7 @@
 
 	buffer_from = require '../buffer_from'
 
-	read_record_header = require '../read_record_header'
+	read_record_header = require './main'
 
 
 ## Run
