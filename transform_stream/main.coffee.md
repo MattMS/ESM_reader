@@ -13,10 +13,17 @@
 
 	parse_file_data = require '../parser/main'
 
+	start_log = require '../start_log/main'
+
+
+## Logging
+
+	log = start_log()
+
 
 ## Exports
 
-	module.exports = (log)->
+	module.exports = ->
 		state = get_initial_state()
 
 > Note that `through2.obj(fn)` is a convenience wrapper around `through2({objectMode: true}, fn)`.
@@ -46,3 +53,5 @@
 					@push item
 
 			done()
+
+	module.exports.log = log

@@ -6,10 +6,7 @@
 
 	concat_stream = require 'concat-stream'
 
-	flogging = require 'flogging'
-
-	# flogging_base = require('flogging.stream_base')
-	# flogging_console_inputs = require('flogging.console_inputs')
+	flogging_base = require 'flogging.stream_base'
 
 	tape = require 'tape'
 
@@ -35,22 +32,17 @@
 
 ### Prepare Transform Stream with logging
 
-		# logger = flogging_base.start()
+		log = transform_stream.log
 
 		log_stream = concat_stream (log_messages)->
 			# console.log log_messages
 
-		# flogging_base.pipe_to_stream(logger, log_stream)
-		# log = flogging_console_inputs(flogging_base.make_note, flogging_base.send(logger))
+		flogging_base.pipe_to_stream(log.base, log_stream)
 
-		log = flogging.start_console_stream log_stream
-		# log = flogging.start_console_text_stream(process.stdout)
-
-		transformer = transform_stream log
+		transformer = transform_stream()
 
 		transformer.on 'end', ->
-			# flogging_base.stop(logger)
-			log.stop()
+			flogging_base.stop(log.base)
 
 
 ### Collect and compare transformed output
