@@ -13,7 +13,7 @@
 
 	calculate_stop_byte = require '../calculate_stop_byte/main'
 
-	get_common_props = require './get_common_props'
+	get_common_props = require '../get_common_props/main'
 
 	read_record_header = require '../read_record_header/main'
 
