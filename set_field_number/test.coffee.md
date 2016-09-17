@@ -7,7 +7,7 @@
 
 ## Relative imports
 
-	set_field_number = require '../../parser/set_field_number'
+	set_field_number = require './main'
 
 
 ## Run tests

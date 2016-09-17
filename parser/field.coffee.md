@@ -19,7 +19,7 @@
 
 	read_field = require '../read_field/main'
 
-	set_field_number = require './set_field_number'
+	set_field_number = require '../set_field_number/main'
 
 	trim_buffer_bytes = require './trim_buffer_bytes'
 
