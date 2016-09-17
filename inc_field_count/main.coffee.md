@@ -7,7 +7,7 @@
 
 ## Relative imports
 
-	get_field_count_path = require './get_field_count_path'
+	get_field_count_path = require '../parser/get_field_count_path'
 
 
 ## Increment the count

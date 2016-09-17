@@ -7,7 +7,7 @@
 
 ## Relative imports
 
-	inc_field_count = require '../../parser/inc_field_count'
+	inc_field_count = require './main'
 
 
 ## Run tests

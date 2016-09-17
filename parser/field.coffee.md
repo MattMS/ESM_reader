@@ -15,7 +15,7 @@
 
 	handlers = require '../records/all'
 
-	inc_field_count = require './inc_field_count'
+	inc_field_count = require '../inc_field_count/main'
 
 	read_field = require '../read_field/main'
 
