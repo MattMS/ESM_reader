@@ -7,9 +7,9 @@
 
 ## Relative imports
 
-	add_type = require '../../parser/add_type'
+	add_type = require './main'
 
-	buffer_from = require '../../buffer_from'
+	buffer_from = require '../buffer_from'
 
 
 ## Run tests

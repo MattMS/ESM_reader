@@ -11,7 +11,7 @@
 
 	add_stop_byte = require '../add_stop_byte/main'
 
-	add_type = require './add_type'
+	add_type = require '../add_type/main'
 
 	calculate_stop_byte = require './calculate_stop_byte'
 

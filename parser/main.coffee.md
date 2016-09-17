@@ -12,7 +12,7 @@
 These functions are the different types of Buffer processors that can be called.
 The appropriate one is chosen by the `pick_parser` switching function.
 
-	add_type = require './add_type'
+	add_type = require '../add_type/main'
 
 	parse_field = require './field'
 
