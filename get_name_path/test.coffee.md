@@ -7,7 +7,7 @@
 
 ## Relative imports
 
-	get_name_path = require '../../parser/get_name_path'
+	get_name_path = require './main'
 
 
 ## Run tests
