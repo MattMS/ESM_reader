@@ -11,7 +11,7 @@
 
 	add_stop_byte = require '../add_stop_byte/main'
 
-	calculate_stop_byte = require './calculate_stop_byte'
+	calculate_stop_byte = require '../calculate_stop_byte/main'
 
 	get_common_props = require './get_common_props'
 

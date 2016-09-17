@@ -7,9 +7,9 @@
 
 ## Relative imports
 
-	buffer_from = require '../../buffer_from'
+	buffer_from = require '../buffer_from'
 
-	calculate_stop_byte = require '../../parser/calculate_stop_byte'
+	calculate_stop_byte = require './main'
 
 
 ## Run tests
