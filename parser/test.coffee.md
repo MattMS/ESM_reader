@@ -1,4 +1,4 @@
-# Test read file data
+# Test parser
 
 ## Library imports
 
@@ -7,13 +7,13 @@
 
 ## Relative imports
 
-	buffer_from = require '../../buffer_from'
+	buffer_from = require '../buffer_from'
 
-	common_file = require '../common_file'
+	common_file = require '../test/common_file'
 
-	get_initial_state = require '../../parser/get_initial_state'
+	get_initial_state = require './get_initial_state'
 
-	parse_file_data = require '../../parser/main'
+	parse_file_data = require './main'
 
 
 ## Run tests
