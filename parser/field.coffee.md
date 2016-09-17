@@ -21,7 +21,7 @@
 
 	set_field_number = require '../set_field_number/main'
 
-	trim_buffer_bytes = require './trim_buffer_bytes'
+	trim_buffer_bytes = require '../trim_buffer_bytes/main'
 
 
 ## Get value handler

@@ -21,7 +21,7 @@
 
 	start_new_record = require './start_new_record'
 
-	trim_buffer_bytes = require './trim_buffer_bytes'
+	trim_buffer_bytes = require '../trim_buffer_bytes/main'
 
 
 ## Adjust group number

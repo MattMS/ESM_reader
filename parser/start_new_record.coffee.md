@@ -17,7 +17,7 @@
 
 	read_record_header = require '../read_record_header/main'
 
-	trim_buffer_bytes = require './trim_buffer_bytes'
+	trim_buffer_bytes = require '../trim_buffer_bytes/main'
 
 
 ## Adjust record number
