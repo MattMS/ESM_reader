@@ -32,9 +32,9 @@
     "url": "git+https://github.com/MattMS/ESM_reader.git"
   },
   "scripts": {
-    "clean": "rimraf *.js parser/*.js records/*.js test/**/*.js values/*.js",
+    "clean": "rimraf *.js parser/*.js records/*.js transform_stream/*.js test/**/*.js values/*.js",
     "prepublish": "coffee -c ./",
-    "test": "coffeetape ./test/**/*.coffee.md"
+    "test": "coffeetape ./test/**/*.coffee.md ./*/test.coffee.md"
   },
   "version": "0.4.0"
 }

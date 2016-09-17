@@ -9,9 +9,9 @@
 
 ## Relative imports
 
-	get_initial_state = require './parser/get_initial_state'
+	get_initial_state = require '../parser/get_initial_state'
 
-	parse_file_data = require './parser/main'
+	parse_file_data = require '../parser/main'
 
 
 ## Exports

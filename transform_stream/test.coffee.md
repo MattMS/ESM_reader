@@ -20,9 +20,9 @@
 
 	buffer_from = require '../buffer_from'
 
-	common_file = require './common_file'
+	common_file = require '../test/common_file'
 
-	transform_stream = require '../transform_stream'
+	transform_stream = require './main'
 
 
 ## Run test
