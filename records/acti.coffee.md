@@ -2,7 +2,7 @@
 
 ## Imports
 
-	buffer_to = require '../buffer_to'
+	buffer_to = require '../buffer_to/main'
 
 	obnd = require '../values/obnd'
 

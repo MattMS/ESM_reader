@@ -7,7 +7,7 @@
 
 ## Relative imports
 
-	buffer_to = require '../buffer_to'
+	buffer_to = require '../buffer_to/main'
 
 
 ## Helper functions
