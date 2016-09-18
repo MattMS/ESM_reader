@@ -20,7 +20,7 @@ The appropriate one is chosen by the `pick_parser` switching function.
 
 	start_log = require '../start_log/main'
 
-	start_new_group = require './start_new_group'
+	start_new_group = require '../parse_group_start/main'
 
 	start_new_record = require './start_new_record'
 
