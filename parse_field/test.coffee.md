@@ -7,9 +7,9 @@
 
 ## Relative imports
 
-	buffer_from = require '../../buffer_from'
+	buffer_from = require '../buffer_from'
 
-	parse_field = require '../../parser/field'
+	parse_field = require './main'
 
 
 ## Run tests

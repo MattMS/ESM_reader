@@ -14,7 +14,7 @@ The appropriate one is chosen by the `pick_parser` switching function.
 
 	add_type = require '../add_type/main'
 
-	parse_field = require './field'
+	parse_field = require '../parse_field/main'
 
 	pipe_logs = require '../pipe_logs/main'
 
