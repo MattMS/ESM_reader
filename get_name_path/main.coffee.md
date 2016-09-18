@@ -7,7 +7,7 @@
 
 ## Relative imports
 
-	# limit_group_label = require '../limit_group_label'
+	# limit_group_label = require '../limit_group_label/main'
 
 
 ## Limit group label property
