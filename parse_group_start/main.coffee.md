@@ -19,7 +19,7 @@
 
 	read_group_header = require '../read_group_header/main'
 
-	start_new_record = require '../parser/start_new_record'
+	start_new_record = require '../parse_record_start/main'
 
 	trim_buffer_bytes = require '../trim_buffer_bytes/main'
 
