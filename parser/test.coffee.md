@@ -11,7 +11,7 @@
 
 	common_file = require '../test/common_file'
 
-	get_initial_state = require './get_initial_state'
+	get_initial_state = require '../get_initial_state/main'
 
 	parse_file_data = require './main'
 

@@ -12,7 +12,7 @@ Test the groups that do not have any records, only fields.
 
 	buffer_from = require '../buffer_from'
 
-	get_initial_state = require '../parser/get_initial_state'
+	get_initial_state = require '../get_initial_state/main'
 
 	parse_file_data = require '../parser/main'
 
