@@ -9,7 +9,7 @@
 
 	buffer_from = require '../../buffer_from'
 
-	tes4 = require '../../records/tes4'
+	tes4 = require './main'
 
 
 ## Run tests
