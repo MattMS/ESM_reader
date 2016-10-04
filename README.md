@@ -44,7 +44,7 @@ The rest of the record is made up of fields, described next.
 
 ### Fields
 
-[read_field.coffee.md](./read_field.coffee.md) parses field data from a Buffer.
+[/read_field/](./read_field/main.coffee.md) parses field data from a Buffer.
 
 A field contains a 4 byte label and then 2 bytes indicating the size of the field data.
 The remaining bytes store the value of the field.
