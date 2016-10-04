@@ -4,7 +4,7 @@
 
 	buffer_to = require '../../buffer_to/main'
 
-	obnd = require '../../values/obnd'
+	obnd = require '../../values/OBND/main'
 
 
 ## Exports
