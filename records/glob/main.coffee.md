@@ -1,24 +1,42 @@
 # GLOB (global variable)
 
+Contains information on Global Variables.
+
+
 ## Structure
 
-- `EDID`
+| Bytes | Type             | Description          |
+| ----- | ---------------- | -------------------- |
+|     4 | ASCII            | Always `EDID`        |
+|     2 | unsigned integer | Size of next field   |
+|     * | ASCII            | ASCII text then `\0` |
+|     4 | ASCII            | Always `FNAM`        |
+|     2 | unsigned integer | Always 1             |
+|     1 | unsigned integer | Type of value        |
+|     4 | ASCII            | Always `FLTV`        |
+|     2 | unsigned integer | Always 4             |
+|     4 | float            | value                |
 
-- 2: length of next field
+- [GLOB @ USEP](http://www.uesp.net/wiki/Tes5Mod:Mod_File_Format/GLOB)
 
-- variable: ascii + `\0`
 
-- `FNAM`
+### FNAM value
 
-- 2: length of next field
+These are the 3 possible values of the `FNAM` field.
 
-- 1: type: `f`/`66` float, `l`/`6C` long, `s`/`73` short
+`f`/`66`
+: float
 
-- `FLTV`
+`l`/`6C`
+: long
 
-- 2: length of next field
+`s`/`73`
+: short
 
-- 4
+
+### FLTV value
+
+All global values are stored as floats.
 
 
 ## Imports
