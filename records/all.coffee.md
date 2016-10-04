@@ -1,13 +1,13 @@
 # All handlers
 
 	module.exports =
-		ASPC: require './aspc'
-		DOOR: require './door'
-		FACT: require './fact'
-		GLOB: require './glob'
-		GMST: require './gmst'
-		MGEF: require './mgef'
-		SCPT: require './scpt'
-		SOUN: require './soun'
-		TES4: require './tes4'
-		TXST: require './txst'
+		ASPC: require './ASPC/main'
+		DOOR: require './DOOR/main'
+		FACT: require './FACT/main'
+		GLOB: require './GLOB/main'
+		GMST: require './GMST/main'
+		MGEF: require './MGEF/main'
+		SCPT: require './SCPT/main'
+		SOUN: require './SOUN/main'
+		TES4: require './TES4/main'
+		TXST: require './TXST/main'
