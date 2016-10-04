@@ -1,4 +1,4 @@
-# Test GMST (game setting) fields
+# Test GMST
 
 ## Library imports
 
@@ -9,7 +9,7 @@
 
 	buffer_from = require '../../buffer_from'
 
-	gmst = require '../../records/gmst'
+	gmst = require './main'
 
 
 ## Run tests

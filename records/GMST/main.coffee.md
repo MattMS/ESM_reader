@@ -2,7 +2,7 @@
 
 ## Imports
 
-	buffer_to = require '../buffer_to/main'
+	buffer_to = require '../../buffer_to/main'
 
 	#R = require 'ramda'
 
