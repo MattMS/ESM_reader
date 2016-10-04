@@ -8,7 +8,7 @@
 
 	{identity} = require 'ramda'
 
-	{pipe_to_stream, stop} = require('flogging.stream_base')
+	{pipe_to_stream, stop} = require 'flogging.stream_base'
 
 	tape = require 'tape'
 
