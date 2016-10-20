@@ -33,9 +33,9 @@
     "url": "git+https://github.com/MattMS/ESM_reader.git"
   },
   "scripts": {
-    "clean": "rimraf *.js add_stop_byte/*.js parser/*.js pipe_logs/*.js records/*.js start_log/*.js transform_stream/*.js test/**/*.js values/*.js",
+    "clean": "rimraf *.js */*.js records/**/*.js values/**/*.js",
     "prepublish": "coffee -c ./",
-    "test": "coffeetape ./test/**/*.coffee.md ./*/test.coffee.md ./records/*/test.coffee.md"
+    "test": "coffeetape ./*/test.coffee.md ./records/*/test.coffee.md"
   },
   "version": "0.4.0"
 }
